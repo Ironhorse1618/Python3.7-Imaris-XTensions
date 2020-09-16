@@ -164,7 +164,7 @@ def XT_MJG_Shape_Analysis5_beta(aImarisId):
     tk.Checkbutton(window, text='Expand Border',
                     variable=var3, onvalue=1, offvalue=0).grid(row=3, column=0, padx=85,sticky=W)
 
-    btn = Button(window, text="Analyze Surfaces", bg='blue', fg='white', command=ShapeAnalysis_Options)
+    btn = Button(window, text="Calculare Statistics", bg='blue', fg='white', command=ShapeAnalysis_Options)
     btn.grid(column=0, row=4, sticky=W, padx=100)
 
     # tk.Label(window, font="bold", text='Statistics Calculated:\n').grid(row=5,column=0,sticky=E)
@@ -648,7 +648,7 @@ def XT_MJG_Shape_Analysis5_beta(aImarisId):
         vSurfaceStatNames=[' Solidity']*vNumberOfNewStats
         vPerimeterRings.AddStatistics(vSurfaceStatNames, vNewStatSolidity,
                                   vSurfaceStatUnits, vSurfaceStatFactors,
-                                  vSurfaceStatFactorName, vSurfaceIDs)
+                                  vSurfaceStatFactorName, vSurfaceStatvIds)
 
     ####################################################
         vSurfaceStatNames=[' Border Perimeter midline (convexhull)']*vNumberOfNewStats
@@ -762,7 +762,7 @@ def XT_MJG_Shape_Analysis5_beta(aImarisId):
     vSurfaceStatNames=[' Area 2D (contour)']*vNumberOfNewStats
     vSurfaces.AddStatistics(vSurfaceStatNames, vNewStat_2D_Area_Contours,
                                       vSurfaceStatUnits, vSurfaceStatFactors,
-                                      vSurfaceStatFactorName, vSurfaceStatvIds)
+                                      vSurfaceStatFactorName, vSurfaceIDs)
     ####################################################
     vSurfaceStatNames=[' Area 2D - ConvexHull']*vNumberOfNewStats
     vSurfaces.AddStatistics(vSurfaceStatNames, vNewStat_2D_Area_CrossSectionalConvexhull,
