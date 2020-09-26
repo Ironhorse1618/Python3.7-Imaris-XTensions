@@ -7,14 +7,14 @@
     #     <Menu>
     #         <Submenu name="Surfaces Functions">
     #             <Item name="Surface-Surface Contact Area" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Surface_Surface_ContactArea_beta2(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_Surface_Surface_ContactArea2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
     #             <Item name="Surface-Surface Contact Area" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Surface_Surface_ContactArea_beta2(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_Surface_Surface_ContactArea2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -34,6 +34,11 @@
 # pixel).  2) The second statistic will be in the "overall" tab, reporting
 # the percentage of surface contact area relative to the total surface area
 # of the primary surfaces.
+
+#Python libraries - no special libraries are required for this XTension
+#See list below for standard libraries being used
+
+
 from operator import itemgetter
 import tkinter as tk
 from tkinter import ttk
@@ -44,7 +49,7 @@ from tkinter.ttk import *
 import ImarisLib
 
 #aImarisId=0
-def XT_MJG_Surface_Surface_ContactArea_beta2(aImarisId):
+def XT_MJG_Surface_Surface_ContactArea2(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
      # Get an imaris object with id aImarisId
