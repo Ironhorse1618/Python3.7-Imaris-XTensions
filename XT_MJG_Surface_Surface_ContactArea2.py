@@ -88,7 +88,7 @@ def XT_MJG_Surface_Surface_ContactArea2(aImarisId):
                          'To properly run this application go to:\n' +
                          'Edit--""Resample3D"" and adjust Z-size to '+ str(endZadj))
         VoxelTest.destroy
-        break
+        exit()
 
      ############################################################################
      #########################################################
