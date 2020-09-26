@@ -7,14 +7,14 @@
     #     <Menu>
     #         <Submenu name="Surfaces Functions">
     #             <Item name="Surface-Surface Overlap" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Surface_Surface_OverlapFinal(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_Surface_Surface_Overlap(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
-    #             <Item name="urface-Surface Overlap" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Surface_Surface_OverlapFinal(%i)</Command>
+    #             <Item name="Surface-Surface Overlap" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Surface_Surface_Overlap(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -38,7 +38,7 @@ from tkinter import messagebox
 from tkinter import simpledialog
 
 #aImarisId=0
-def XT_MJG_Surface_Surface_OverlapFinal(aImarisId):
+def XT_MJG_Surface_Surface_Overlap(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
