@@ -1,6 +1,6 @@
 #Convert Surface center of homogeneous mass into Spot object
 
-#Written by Matthew J. Gastinger, Bitplane Advanced Application Scientist.  
+#Written by Matthew J. Gastinger
 #July 2020.
 #
 #<CustomTools>
