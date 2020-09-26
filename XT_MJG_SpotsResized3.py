@@ -24,7 +24,9 @@
 #Description:
 #Resize all Spots to defined diameter (default if not spot are selected)
 #If a only a selected group of spots are selected, only those will be resized.
+#New Spots object will be created
 
+#Python libraries - no special libraries are required for this XTension
 
 import ImarisLib
 import time
