@@ -1,7 +1,7 @@
 #Spots Copy to all time points
 #
 # Written by Matthew J. Gastinger
-# June 2020 - Imaris 9.5.1#
+# June 2020 - Imaris 9.6.0
 #
 #  Installation:
 #
@@ -11,15 +11,15 @@
 #    <CustomTools>
 #      <Menu>
 #       <Submenu name="Spots Functions">
-#        <Item name="Spots Copy to All Time Points 2_beta" icon="Python3">
-#          <Command>Python3XT::XT_MJG_CopytoAllTimePoints2_beta(%i)</Command>
+#        <Item name="Spots Copy to All Time Points" icon="Python3">
+#          <Command>Python3XT::XT_MJG_CopytoAllTimePoints2(%i)</Command>
 #        </Item>
 #       </Submenu>
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSpots">
-#          <Item name="Spots Copy to All Time Points_2_beta" icon="Python3">
-#            <Command>Python3XT::XT_MJG_CopytoAllTimePoints2_beta(%i)</Command>
+#          <Item name="Spots Copy to All Time Points" icon="Python3">
+#            <Command>Python3XT::XT_MJG_CopytoAllTimePoints2(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
@@ -30,6 +30,7 @@
 #  This XTension will copy all or selected spots/surfaces from a single time frame to
 #  all of the time points.  And it will generate Track edges to connect the spots over time.
 
+# Python libraries - no special libraries are required for this XTension
 
 # GUI imports
 import tkinter as tk
@@ -40,7 +41,7 @@ from operator import itemgetter
 
 import ImarisLib
 #aImarisId=0
-def XT_MJG_CopytoAllTimePoints2_beta(aImarisId):
+def XT_MJG_CopytoAllTimePoints2(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     #Get an imaris object with id aImarisId
