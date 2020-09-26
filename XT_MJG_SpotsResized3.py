@@ -8,14 +8,14 @@
 #      <Menu>
 #       <Submenu name="Spots Functions">
 #        <Item name="Resize Spots" icon="Python3">
-#          <Command>Python3XT::XT_MJG_SpotsResized3_beta(%i)</Command>
+#          <Command>Python3XT::XT_MJG_SpotsResized3(%i)</Command>
 #        </Item>
 #       </Submenu>
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSpots">
 #          <Item name="Resize Spots" icon="Python3">
-#            <Command>Python3XT::XT_MJG_SpotsResized3_beta(%i)</Command>
+#            <Command>Python3XT::XT_MJG_SpotsResized3(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
@@ -37,7 +37,7 @@ from tkinter import messagebox
 from tkinter import simpledialog
 
 #aImarisId=0
-def XT_MJG_SpotsResized3_beta(aImarisId):
+def XT_MJG_SpotsResized3(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
