@@ -7,15 +7,15 @@
 #    <CustomTools>
 #      <Menu>
 #         <Submenu name="Surfaces Functions">
-        #   <Item name="Filaments To Spots beta2" icon="Python3">
-    #         <Command>Python3XT::XT_MJG_FilamentToSpots2_beta(%i)</Command>
+        #   <Item name="Filaments To Spots" icon="Python3">
+    #         <Command>Python3XT::XT_MJG_FilamentToSpots2(%i)</Command>
     #       </Item>
          #</Submenu>
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpFilaments">
-    #       <Item name="Filaments To Spots beta2" icon="Python3">
-    #         <Command>Python3XT::XT_MJG_FilamentToSpots2_beta(%i)</Command>
+    #       <Item name="Filaments To Spots" icon="Python3">
+    #         <Command>Python3XT::XT_MJG_FilamentToSpots2(%i)</Command>
     #       </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
@@ -30,6 +30,9 @@
 #Notes:  Gaps in the Filament points will be filled
     #       New spot placed half between adjacent points and diameter set
     #        to the average of the 2 surrounding spots
+
+# Python libraries - scipy
+
 
 import numpy as np
 import time
@@ -50,7 +53,7 @@ import operator
 
 import ImarisLib
 #aImarisId=0
-def XT_MJG_FilamentToSpots2_beta(aImarisId):
+def XT_MJG_FilamentToSpots2(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
