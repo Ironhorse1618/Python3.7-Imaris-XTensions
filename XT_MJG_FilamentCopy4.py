@@ -1,7 +1,7 @@
 #Copy Filament to new time point
 #
 # Written by Matthew J. Gastinger
-# June 2020 - Imaris 9.5.1
+# June 2020 - Imaris 9.6.0
 #
 #    <CustomTools>
 #      <Menu>
