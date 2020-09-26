@@ -26,9 +26,11 @@
 #inside each surface that overlap with each other.  A new channel will be
 #made, and a new surface generated from the overlapping regions.
 
+#Python libraries - no special libraries are required for this XTension
+
 import ImarisLib
-#import numpy
-# GUI imports
+import numpy
+
 
 import tkinter as tk
 from tkinter import *
