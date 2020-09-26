@@ -26,6 +26,8 @@
 #center of homogeneous mass, and plot those positions as a Spots object.  It will do
 #this in all time points, for all or a selected group of surfaces.
 
+#Python libraries - no special libraries are required for this XTension
+
 
 #import time
 # import random
