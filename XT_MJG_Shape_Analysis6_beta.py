@@ -724,7 +724,7 @@ def XT_MJG_Shape_Analysis6_beta(aImarisId):
         for index, item in enumerate(zRingIntensityMax):
             zCompleteRingIntensityMax[index % vSizeC].append(item)
 
-        for c in range (vSizeC-1):
+        for c in range (vSizeC):
             vSurfaceStatNames=[' IntensityMean Cell_Border ch' + str(c+1)]*vNumberOfNewStats
             vSurfaces.AddStatistics(vSurfaceStatNames, zCompleteRingIntensityMean[c],
                                           vSurfaceStatUnits, vSurfaceStatFactors,
