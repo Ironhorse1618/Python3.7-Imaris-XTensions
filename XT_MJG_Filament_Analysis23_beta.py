@@ -198,7 +198,7 @@ def XT_MJG_Filament_Analysis23_beta(aImarisId):
     var4 = tk.IntVar(value=0)#Detect Boutons (varicosities)
     var5 = tk.IntVar(value=0)#Find Spots Close to Filaments
     var6 = tk.IntVar(value=0)#fill spots
-    var7 = tk.IntVar(value=1)#dendrite dendrite contact
+    var7 = tk.IntVar(value=0)#dendrite dendrite contact
 
     var4Low=tk.IntVar(value=0)#bouton sensitivity
     var4Med=tk.IntVar(value=1)#bouton sensitivity
