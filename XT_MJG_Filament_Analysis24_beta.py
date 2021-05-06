@@ -780,6 +780,8 @@ def XT_MJG_Filament_Analysis24_beta(aImarisId):
             xLengthContactsWorkingDendriteColoc=[]
             xCompleteSpotSizeforContact=[]
             xCompleteSpotSizeforContactColoc=[]
+            dcount=0
+            scount=0
         #Loop through dendrite segments, terminal segements and spine segments
             vBranchIndex=0
             for vBranchIndex in range (vNumberOfDendriteBranches):
