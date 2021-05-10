@@ -1195,7 +1195,7 @@ def XT_MJG_Filament_Analysis25_beta(aImarisId):
                             #Find Dendrite Points that are  "close" to ALL Filament Points min value per row in array
                             xDendriteToDendriteDistanceArrayColoc=cdist(xDendriteCurrentWorkingPositions,vFilamentsColocXYZ)
                             #adjust for current dendrite point radius
-                            xDendriteToDendriteDistanceArrayColoc=xDendriteToDendriteDistanceArrayColoc-np.vstack(xDendriteCurrentWorkingRadii)
+                            xDendriteToDendriteDistanceArrayColoc=xDendriteToDendriteDistanceArrayColoc-np.vstack(xDendriteCurrentWorkingRadii)-vFilamentsColocRadius
                             #Dendrite Point index of points contacting same filament.
                             xCBIarrayColoc=np.array(np.where(xDendriteToDendriteDistanceArrayColoc <= 0))
                             #add row indicating Coloc filament Index
