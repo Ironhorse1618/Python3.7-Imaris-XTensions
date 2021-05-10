@@ -185,7 +185,7 @@ def XT_MJG_Filament_Analysis25_beta(aImarisId):
         if vOptionSomaThreshold==1:
             vOptionSomaThresholdValue=[float(Entry3.get())]
         else:
-            vOptionSomaThresholdValue=100000
+            vOptionSomaThresholdValue=0
         if NamesSpots==[] and vOptionFilamentCloseToSpots==1:
             messagebox.showerror(title='Spot Selection',
                              message='Please Create Spots Object!!')
@@ -1488,20 +1488,19 @@ def XT_MJG_Filament_Analysis25_beta(aImarisId):
                             xSpotSizeforContinuousContactId=[]
                             xContactSpotPostionWorking=[]
                             if xSizeCBIarray==1:#only one contact point
-                                if vOptionSomaThreshold==1:
-                                    xDistToSoma = np.sqrt((vFilamentsXYZ[vBeginningVertex][0]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][0])**2 + (vFilamentsXYZ[vBeginningVertex][1]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][1])**2 +(vFilamentsXYZ[vBeginningVertex][2]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][2])**2)
-                                    if xDistToSoma < vOptionSomaThresholdValue:
-                                        continue
-                                    else:
-                                        xCompleteDendriteDendriteContactSpotPositions.append(xDendriteCurrentWorkingPositions[xCBIarray[0,0]])
-                                        xNumberDendriteContactsWorking=xNumberDendriteContactsWorking+1
-                                        xContactLength=1
-                                        xLengthContactsWorkingDendrite.append(xContactLength)
-                                        xCompleteSpotSizeforContact.append(xDendriteCurrentWorkingRadii[xCBIarray[0,w]])
-                                        xContactBranchIndexId.append(vBranchIndex)
-                                        xContactSegmentId.append(vSegmentIds[vBranchIndex])
-                                        xContactLength=0
-                                        # print ('Only one contact')
+                                xDistToSoma = np.sqrt((vFilamentsXYZ[vBeginningVertex][0]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][0])**2 + (vFilamentsXYZ[vBeginningVertex][1]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][1])**2 +(vFilamentsXYZ[vBeginningVertex][2]-xDendriteCurrentWorkingPositions[xCBIarray[0,0]][2])**2)
+                                if xDistToSoma < vOptionSomaThresholdValue:
+                                    continue
+                                else:
+                                    xCompleteDendriteDendriteContactSpotPositions.append(xDendriteCurrentWorkingPositions[xCBIarray[0,0]])
+                                    xNumberDendriteContactsWorking=xNumberDendriteContactsWorking+1
+                                    xContactLength=1
+                                    xLengthContactsWorkingDendrite.append(xContactLength)
+                                    xCompleteSpotSizeforContact.append(xDendriteCurrentWorkingRadii[xCBIarray[0,w]])
+                                    xContactBranchIndexId.append(vBranchIndex)
+                                    xContactSegmentId.append(vSegmentIds[vBranchIndex])
+                                    xContactLength=0
+                                    # print ('Only one contact')
                             elif xSizeCBIarray>1:#multiple contact points
                                 # w=2
                                 # w=1
