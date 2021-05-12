@@ -1988,7 +1988,7 @@ def XT_MJG_Filament_Analysis26_beta(aImarisId):
 
                         vNewFilament=vImarisApplication.GetFactory().CreateFilaments()
                         vNewFilament.AddFilament(wNewFilamentsXYZ, wNewFilamentsRadius, wNewFilamentsTypes, wNewFilamentsEdges, vFilamentsIndexT)
-                        vNewFilament.SetBeginningVertexIndex(0, 0)
+                        vNewFilament.SetBeginningVertexIndex(0, vBeginningVertex)
                         #Reset the "new filament"
                         wNewFilamentsXYZ=[]
                         wNewFilamentsRadius=[]
@@ -2177,7 +2177,7 @@ def XT_MJG_Filament_Analysis26_beta(aImarisId):
 
                         vNewFilament=vImarisApplication.GetFactory().CreateFilaments()
                         vNewFilament.AddFilament(wNewFilamentsXYZ, wNewFilamentsRadius, wNewFilamentsTypes, wNewFilamentsEdges, vFilamentsIndexT)
-                        vNewFilament.SetBeginningVertexIndex(0, 0)
+                        vNewFilament.SetBeginningVertexIndex(0, vBeginningVertex)
 
                 #Grab New Filament Spine Statistics for attachment point distance.
                         vNewFilamentStatistics = vNewFilament.GetStatistics()
