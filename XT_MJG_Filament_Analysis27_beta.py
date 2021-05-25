@@ -204,13 +204,13 @@ def XT_MJG_Filament_Analysis27_beta(aImarisId):
 
         if (var4.get() == 1) and (var4Low.get() == 1):
             vOptionBoutonThreshold=20
-            vOptionBoutonHeight=1.5
+            vOptionBoutonHeight=5
         elif (var4.get() == 1) and (var4Med.get() == 1):
             vOptionBoutonThreshold=15
-            vOptionBoutonHeight=.4
+            vOptionBoutonHeight=.3
         elif (var4.get() == 1) and (var4High.get() == 1):
             vOptionBoutonThreshold=5
-            vOptionBoutonHeight=1
+            vOptionBoutonHeight=.1
         if (var2.get() == 0) and (var3.get() == 1):
             vOptionFilamentToSpots=1
         window.destroy()
