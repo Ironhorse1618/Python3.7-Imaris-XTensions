@@ -1,3 +1,4 @@
+#test
 #Convert Surface center of homogeneous mass into Spot object
 
 #Written by Matthew J. Gastinger
