@@ -6,20 +6,20 @@
 #<CustomTools>
 #      <Menu>
 #       <Submenu name="Surfaces Functions">
-#        <Item name="Center of Mass to Spots" icon="Python3">
+#        <Item name="Python - Center of Mass to Spots" icon="Python3">
 #          <Command>Python3XT::XT_MJG_SurfacesToSpots(%i)</Command>
 #        </Item>
 #       </Submenu>
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSurfaces">
-#          <Item name="Center of Mass to Spots" icon="Python3">
+#          <Item name="Python - Center of Mass to Spots" icon="Python3">
 #            <Command>Python3XT::XT_MJG_SurfacesToSpots(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
 #    </CustomTools>
-# 
+#
 #Description
 #
 #This XTension wil collect the XYZ positon of the surface based on the
@@ -33,6 +33,10 @@
 # import random
 
 # GUI imports
+# GUI imports
+import tkinter as tk
+from tkinter import ttk
+from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -53,24 +57,26 @@ def XT_MJG_SurfacesToSpots(aImarisId):
     global Entry1, aCopyAll
     ###########################################################################
     aCopyAll=False
+
+    root=Tk()
+    root.geometry("200x50-0+0")
+    #Set input as the top level window
+    root.attributes("-topmost", True)
+
     def dialog():
         global Entry1, vNewRadius, aCopyAll
         vNewRadius=Entry1.get()
         vNewRadius=float(vNewRadius)
         aCopyAll=False
         root.destroy()
-    
+
     def All():
         global Entry1, vNewRadius, aCopyAll
         aCopyAll=True
         vNewRadius=Entry1.get()
         vNewRadius=float(vNewRadius)
         root.destroy()
-    
-    root=Tk()
-    root.geometry("200x50-0+0")
-    #Set input as the top level window
-    root.attributes("-topmost", True)
+
     ##################################################################
     #Set input in center on screen
     # Gets the requested values of the height and widht.
@@ -82,22 +88,22 @@ def XT_MJG_SurfacesToSpots(aImarisId):
     # Positions the window in the center of the page.
     root.geometry("+{}+{}".format(positionRight, positionDown))
     ##################################################################
-    
+
     Label(root,text="New Spot Size:").grid(row=0)
     Entry1=Entry(root,justify='center',width=10)
     Entry1.grid(row=0, column=1)
     Entry1.insert(0, 5)
-    
+
     Single=Button(root, text="Selected Surfaces", bg='blue', fg='white',command=dialog)
     Alltime=Button(root, text="All Surfaces",bg='red', command=All)
     Single.grid(row=2, column=1)
     Alltime.grid(row=2, column=0)
-    
-    mainloop()
-    
+
+    root.mainloop()
+
     ############################################################################
     ############################################################################
-    
+
     #Image properties
     vDataMin = (vImage.GetExtendMinX(),vImage.GetExtendMinY(),vImage.GetExtendMinZ())
     vDataMax = (vImage.GetExtendMaxX(),vImage.GetExtendMaxY(),vImage.GetExtendMaxZ())
@@ -108,15 +114,15 @@ def XT_MJG_SurfacesToSpots(aImarisId):
     aYvoxelSpacing= (vDataMax[1]-vDataMin[1])/vDataSize[1]
     aZvoxelSpacing = round((vDataMax[2]-vDataMin[2])/vDataSize[2],3)
     vSmoothingFactor=aXvoxelSpacing*2
-    
+
     vSurfaces = vFactory.ToSurfaces(vImarisApplication.GetSurpassSelection())
     vNumberOfSurfaces = vSurfaces.GetNumberOfSurfaces()
-    
+
     vPositionFinal = []
     vTimeIndexFinal=[]
     vSelectedSurfaces = vSurfaces.GetSelectedIndices()
     vNewSpots = vImarisApplication.GetFactory().CreateSpots()
-    
+
     if aCopyAll==True:
         for i in range (vNumberOfSurfaces):
             vPositionFinal.extend(vSurfaces.GetCenterOfMass(i))
@@ -129,9 +135,9 @@ def XT_MJG_SurfacesToSpots(aImarisId):
             vTimeIndexFinal.append(vSurfaces.GetTimeIndex(vSelectedSurfaces[i]))
         vSpotsRadius = [vNewRadius]*len(vSelectedSurfaces)
         vNewSpots.SetName('Selected Surfaces - ' + vSurfaces.GetName())
-    
-    
-    
+
+
+
     ##############################################################################
     vRGBA = 65535 #for yellow
     vNewSpots.SetColorRGBA(vRGBA)

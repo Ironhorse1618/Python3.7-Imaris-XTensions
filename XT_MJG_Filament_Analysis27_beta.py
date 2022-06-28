@@ -70,8 +70,9 @@ import statistics
 
 # GUI imports
 import tkinter as tk
-from tkinter import *
 from tkinter import ttk
+from tkinter.ttk import *
+from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
 #import matplotlib.pyplot as plt

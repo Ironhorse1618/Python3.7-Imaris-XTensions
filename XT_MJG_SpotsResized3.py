@@ -34,10 +34,11 @@ import random
 
 # GUI imports
 import tkinter as tk
+from tkinter import ttk
+from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
-
 #aImarisId=0
 def XT_MJG_SpotsResized3(aImarisId):
     # Create an ImarisLib object

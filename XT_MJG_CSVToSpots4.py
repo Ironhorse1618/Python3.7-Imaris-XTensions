@@ -30,11 +30,15 @@
 
 import numpy as np
 import ImarisLib
+# GUI imports
 import tkinter as tk
-from tkinter.filedialog import askopenfile
-from tkinter import messagebox
-from tkinter import *
 from tkinter import ttk
+from tkinter.ttk import *
+from tkinter import *
+from tkinter import messagebox
+from tkinter import simpledialog
+from tkinter.filedialog import askopenfile
+
 import pandas
 import Imaris
 import os
