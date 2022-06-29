@@ -31,7 +31,6 @@
 import ImarisLib
 import numpy
 
-
 # GUI imports
 import tkinter as tk
 from tkinter import ttk
@@ -40,7 +39,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
 
-#aImarisId=0
+# aImarisId=0
 def XT_MJG_Surface_Surface_Overlap(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
@@ -66,28 +65,41 @@ def XT_MJG_Surface_Surface_Overlap(aImarisId):
     vDefaultSmoothingFactor=round(Xvoxelspacing*2,2);
 
     ############################################################################
-    root = Tk()
-    root.withdraw()
-    #Question = Toplevel(root) # (Manually put toplevel in front of root)
-    w = root.winfo_reqwidth()
-    h = root.winfo_reqheight()
-    ws = root.winfo_screenwidth()
-    hs = root.winfo_screenheight()
+    window = tk.Tk()
+    window.title('Surface Overlap')
+    window.geometry('260x55')
+    window.attributes("-topmost", True)
+
+    w = window.winfo_reqwidth()
+    h = window.winfo_reqheight()
+    ws = window.winfo_screenwidth()
+    hs = window.winfo_screenheight()
     x = (ws/2) - (w/2)
     y = (hs/2) - (h/2)
-    root.geometry('+%d+%d' % (x, y))
-    #Smoothing or no smoothing for the Coloc result
-    Smoothing = messagebox.askyesno('Surface Creation',
-                            'Do you want to smooth the Overlap surface?')
-    root.lift()
+    window.geometry('+%d+%d' % (x, y))
 
-    #Set smoothing factor
-    vSmoothingFactor=0
-    if Smoothing==True:
-        vSmoothingFactor = simpledialog.askfloat('Set Creation Parameters',
-                                    'Smoothing Factor: ', initialvalue=vDefaultSmoothingFactor)
-        root.lift()
-    root.destroy()
+    def CreateSurface():
+        global vSmoothingFactor
+        if (var1.get() == 0):
+            vSmoothingFactor=0
+            window.destroy()
+        else:
+            vSmoothingFactor=[float(Entry1.get())]
+            window.destroy()
+
+    var1 = tk.IntVar(value=0)
+    tk.Checkbutton(window, text='Smoothing',
+                    variable=var1, onvalue=1, offvalue=0).grid(row=0, column=0, padx=40,sticky=W)
+    tk.Label(window, text='um').grid(row=0,column=1,padx=45)
+
+    Entry1=Entry(window,justify='center',width=4)
+    Entry1.grid(row=0, column=1, sticky=W)
+    Entry1.insert(0, str(vDefaultSmoothingFactor))
+
+    btn = Button(window, text="Create Overlap Surface",highlightbackground='blue',command=CreateSurface)
+    btn.grid(column=0, row=2, sticky=E)
+
+    window.mainloop()
 
     #########################################################
     #Count and find Surpass objects in Scene

@@ -1,7 +1,7 @@
 #Spots Copy to all time points
 #
 # Written by Matthew J. Gastinger
-# June 2020 - Imaris 9.5.1#
+# June 2020 - Imaris 9.5.1
 #
 #  Installation:
 #
@@ -12,14 +12,14 @@
 #      <Menu>
 #       <Submenu name="Spots Functions">
 #        <Item name="Spots Copy to All Time Points" icon="Python3">
-#          <Command>Python3XT::XT_MJG_CopytoAllTimePoints3(%i)</Command>
+#          <Command>Python3XT::XT_MJG_SpotsCopyToAllTimepoints3(%i)</Command>
 #        </Item>
 #       </Submenu>
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSpots">
 #          <Item name="Spots Copy to All Time Points" icon="Python3">
-#            <Command>Python3XT::XT_MJG_CopytoAllTimePoints3(%i)</Command>
+#            <Command>Python3XT::XT_MJG_SpotsCopyToAllTimepoints3(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
@@ -31,19 +31,12 @@
 #  all of the time points.  And it will generate Track edges to connect the spots over time.
 
 
-# GUI imports
-import tkinter as tk
-from tkinter import ttk
-from tkinter.ttk import *
-from tkinter import *
-from tkinter import messagebox
-from tkinter import simpledialog
 from operator import itemgetter
 import numpy as np
 
 import ImarisLib
-#aImarisId=0
-def XT_MJG_CopytoAllTimePoints3(aImarisId):
+# aImarisId=0
+def XT_MJG_SpotsCopyToAllTimepoints3(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     #Get an imaris object with id aImarisId
@@ -64,57 +57,6 @@ def XT_MJG_CopytoAllTimePoints3(aImarisId):
     vImageSize = (vImage.GetSizeX(),vImage.GetSizeY(),vImage.GetSizeZ())
     vSizeT = vImage.GetSizeT()
     vSizeC = vImage.GetSizeC()
-
-
-    # ############################################################################
-
-    # #Dialog window
-    # ############################################################################
-    # window = tk.Tk()
-    # window.title('Spots Copy')
-    # #window.geometry('75x100')
-    # window.attributes("-topmost", True)
-
-    # ##################################################################
-    # #Set input in center on screen
-    # # Gets the requested values of the height and widht.
-    # windowWidth = window.winfo_reqwidth()
-    # windowHeight = window.winfo_reqheight()
-    # # Gets both half the screen width/height and window width/height
-    # positionRight = int(window.winfo_screenwidth()/2 - windowWidth/2)
-    # positionDown = int(window.winfo_screenheight()/2 - windowHeight/2)
-    # # Positions the window in the center of the page.
-    # window.geometry("+{}+{}".format(positionRight, positionDown))
-    # ##################################################################
-    # global var1, var2
-
-    # def ShapeAnalysis_Options():
-    #     global vOption1, vOption2,vOption3, var1, var2
-    #     vOption1=var1.get()
-    #     vOption2=var2.get()
-    #     # vOption3=var3.get()
-
-    #     if (vOption1+vOption2)>1:
-    #         messagebox.showerror(title='Copy menu',
-    #                                   message='Please Choose One Option!')
-    #         window.mainloop()
-    #     window.destroy()
-
-    # var1 = tk.IntVar(value=1)
-    # var2 = tk.IntVar(value=0)
-    # # var3 = tk.IntVar(value=0)
-
-    # tk.Label(window, font="bold", text='Choose the Copy Method').grid(row=0,column=0)
-    # tk.Checkbutton(window, text='Duplicate ALL (or Selected) Spots to ALL Timepoints',
-    #                 variable=var1, onvalue=1, offvalue=0).grid(row=1, column=0, padx=40,sticky=W)
-    # tk.Checkbutton(window, text='Duplicate ALL (or Selected) Spots on Current Timepoint to ALL Timepoints',
-    #                 variable=var2, onvalue=1, offvalue=0).grid(row=2, column=0, padx=40,sticky=W)
-    # # tk.Checkbutton(window, text='Duplicate Spots from Current Timepoint to ALL successive Timepoints',
-    # #                 variable=var3, onvalue=1, offvalue=0).grid(row=4, column=0, padx=40,sticky=W)
-
-    # btn = Button(window, text="Copy Spots", bg='blue', fg='white', command=ShapeAnalysis_Options)
-    # btn.grid(column=0, row=5, sticky=W, padx=100)
-    # window.mainloop()
 
     ############################################################################
     #Get Image properties
@@ -159,7 +101,7 @@ def XT_MJG_CopytoAllTimePoints3(aImarisId):
 
         sorter = np.argsort(vSpotsIds)
         vSelectedSpotIndices=sorter[np.searchsorted(vSpotsIds, vSelectedSpotsIds, sorter=sorter)]
-        if vNumberOfSpots>1:
+        if vNumberOfSelectedSpots>1:
             vSelectedPositionsXYZ=list(itemgetter(*vSelectedSpotIndices)(vSpotsPositionXYZ))
             vSelectedRadius=list(itemgetter(*vSelectedSpotIndices)(vSpotsRadius))
             vSelectedTimeIndex=list(itemgetter(*vSelectedSpotIndices)(vSpotsTime))
