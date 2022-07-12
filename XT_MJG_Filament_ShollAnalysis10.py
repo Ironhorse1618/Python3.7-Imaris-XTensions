@@ -77,6 +77,7 @@ import numpy as np
 import time
 import random
 from numpy import array
+import platform
 
 # GUI imports
 # GUI imports
@@ -170,7 +171,11 @@ def XT_MJG_Filament_ShollAnalysis10(aImarisId):
                    'per Sholl sphere',
                    variable=var1, onvalue=1, offvalue=0).grid(row=2, column=0)
     tk.Label(qInputBox, text='').grid(row=3, column=0)
-    Single=Button(qInputBox, bg="blue", fg="white", text="Process Sholl Analysis",command=ShollInput )
+    qWhatOS=platform.system()
+    if qWhatOS='Darwin'
+        Single=Button(qInputBox, fg="black", text="Process Sholl Analysis",command=ShollInput )
+    else:
+        Single=Button(qInputBox, bg="blue", fg="white", text="Process Sholl Analysis",command=ShollInput )
     Single.grid(row=4, column=0, sticky=E)
 
 
@@ -944,7 +949,11 @@ def XT_MJG_Filament_ShollAnalysis10(aImarisId):
         #main loop adds one for last sholl ring
         for i in range (len(zShollLabelsInt)-1):
             # vOverallStatNames = [' zFilamentID:'+ str(vFilamentIds[vFilamentCountActual-1])+'--'+ str(zShollLabelsInt[i+1]) + ' um Sholl Dendrite Length Sum']
-            vOverallStatNames = [' Dendrite Length Sum - ' + str(zShollLabelsInt[i+1]) + ' um Sholl Ring']
+            if zShollLabelsInt[i] >= 100:
+                vOverallStatNames = [' Dendrite Length Sum - ' + str(zShollLabelsInt[i+1]) + ' um Sholl Ring']
+            else:
+                vOverallStatNames = [' Dendrite Length Sum - ' + '0' + str(zShollLabelsInt[i+1]) + ' um Sholl Ring']
+
             vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNewFilamentsStatLength[i]],
                                       vOverallStatUnits_um, vOverallStatFactors,
                                       vOverallStatFactorNames, vOverallStatIds)
