@@ -5,27 +5,22 @@
     # <CustomTools>
     #     <Menu>
     #         <Submenu name="Surfaces Functions">
-    #             <Item name="Kiss and Run 2 - Python" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
-    #             </Item>
-    #         </Submenu>
-    #         <Submenu name="Spots Functions">
-    #             <Item name="Kiss and Run 2 - Python" icon="Python3">
+    #             <Item name="Kiss and Run2 - Python" icon="Python3">
     #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
-    #             <Item name="Kiss and Run 2" - Python icon="Python3">
+    #             <Item name="Kiss and Run2 - Python" icon="Python3">
     #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
-#           <SurpassComponent name="bpSpots">
-#                <Item name="Resize Spots" icon="Python3">
-#                       <Command>Python3XT::XT_MJG_SpotsResized4(%i)</Command>
-#               </Item>
-#            </SurpassComponent>
+    #         <SurpassComponent name="bpSpots">
+    #             <Item name="Kiss and Run2 - Python" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
+    #             </Item>
+    #         </SurpassComponent>
     #     </SurpassTab>
     # </CustomTools>
 
