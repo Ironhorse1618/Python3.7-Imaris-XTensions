@@ -225,7 +225,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         elif SecondarySelectionSpots==PrimarySelection:
             main.mainloop()
         else:
-            qObjectAnalyze = 'Spots'
+            qObjectAnalyzed = 'Spots'
             main.destroy()
 
     Button1 = Button(main, text="ANALYZE tracked Surfaces", command=selectSurface)
@@ -359,19 +359,17 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     if qObjectAnalyzed == 'Spots':
         vDataItem=vScene.GetChild(NamesSpotsIndex[(vNamesSpots.index( ''.join(map(str, SecondarySelectionSpots[0]))))])
         vObjects=vImarisApplication.GetFactory().ToSpots(vDataItem)
-        qisTrackedObject= 'Spot'
         vSpotsRadius = vObjects.GetRadii()
         vSpotsPositionXYZ = vObjects.GetPositionsXYZ()
 
     else:
         vDataItem=vScene.GetChild(NamesSurfaceIndex[(vNamesSurfaces.index( ''.join(map(str, SecondarySelection[0]))))])
         vObjects=vImarisApplication.GetFactory().ToSurfaces(vDataItem)
-        qisTrackedObject= 'Surface'
 
     ####################################################################
     ####################################################################
     # get all spots in selected Surpass object
-    if qisTrackedObject == 'Spot':
+    if qObjectAnalyzed == 'Spots':
         # vSpotsRadius = vObjects.GetRadii()
         # vSpotsPositionXYZ = vObjects.GetPositionsXYZ()
         # vSpotsTime = vObjects.GetIndicesT()
@@ -418,7 +416,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
 
 
         #Add Surface specific statistics (OverlapVolumeRatio)
-        if qisTrackedObject == 'Surface':
+        if qObjectAnalyzed == 'Surfaces':
             zStatisticOverlapVolumeRatio = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mValues)
             zStatisticOverlapVolumeRatioID = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mIds)
             zStatisticOverlapVolumeRatiofactors = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mFactors)
@@ -508,7 +506,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         #loop for each missing Integer
             for aIndex in range(len(zMissingInts)):
                 #set fake colume at same height as current track
-                if qisTrackedObject == "Surface":
+                if qObjectAnalyzed == "Surfaces":
                     aNew_column = ['999999', zMissingInts[aIndex],999999,999999,-999999]
                     aCount = aCount + 1
                 else:
