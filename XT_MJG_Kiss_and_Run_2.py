@@ -21,6 +21,8 @@
     #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
+    #     </SurpassTab>
+    #     <SurpassTab>
     #         <SurpassComponent name="bpSpots">
     #             <Item name="Kiss and Run 2" - Python icon="Python3">
     #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
