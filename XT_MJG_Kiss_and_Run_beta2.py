@@ -498,7 +498,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         #loop for each missing Integer
             for aIndex in range(len(zMissingInts)):
                 #set fake colume at same height as current track
-                if qObjectAnalyzed == True:
+                if qOverlapMethod == True:
                     aNew_column = ['999999', zMissingInts[aIndex],999999,999999,-999999]
                     aCount = aCount + 1
                 else:
