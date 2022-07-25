@@ -193,7 +193,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     lstbox2.grid(column=2, row=0, columnspan=2)
 
     def selectSurface():
-        global SecondarySelection
+        global SecondarySelection,qObjectAnalyzed
         SecondarySelection = list()
         selection = lstbox.curselection()
         for i in selection:
@@ -207,6 +207,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         elif SecondarySelection==PrimarySelection:
             main.mainloop()
         else:
+            qObjectAnalyzed = 'Surfaces'
             main.destroy()
 
     def selectSpots():
@@ -224,7 +225,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         elif SecondarySelectionSpots==PrimarySelection:
             main.mainloop()
         else:
-            qObjectAnalyzed=True
+            qObjectAnalyze = 'Spots'
             main.destroy()
 
     Button1 = Button(main, text="ANALYZE tracked Surfaces", command=selectSurface)
@@ -232,7 +233,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
 
     Button2 = Button(main, text="ANALYZE tracked Spots", command=selectSpots)
     Button2.grid(column=2, row=1)
-    qObjectAnalyzed= False
+    qObjectAnalyzed = []
     #Select Surpass Selected object
     qCheckSurfaces = [idx for idx, val in enumerate(vNamesSurfaces) if val in vSurpassSelectionName]
     qCheckSpots = [idx for idx, val in enumerate(vNamesSpots) if val in vSurpassSelectionName]
@@ -355,7 +356,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     vDataItem=vScene.GetChild(NamesSurfaceIndex[(vNamesSurfaces.index( ''.join(map(str, PrimarySelection[0]))))])
     vSurfacesPrimary=vImarisApplication.GetFactory().ToSurfaces(vDataItem)
 
-    if qObjectAnalyzed:
+    if qObjectAnalyzed == 'Spots':
         vDataItem=vScene.GetChild(NamesSpotsIndex[(vNamesSpots.index( ''.join(map(str, SecondarySelectionSpots[0]))))])
         vObjects=vImarisApplication.GetFactory().ToSpots(vDataItem)
         qisTrackedObject= 'Spot'
@@ -671,11 +672,14 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     #                               vOverallStatUnits, vOverallStatFactors,
     #                               vOverallStatFactorNames, vOverallStatIds*vSizeT)
 
+
+    vObjects.SetName(str(vObjects.GetName()) + ' - Analyzed Contact Events')
+    vImarisApplication.GetSurpassScene().AddChild(vObjects, -1)
+
     qProgressBar.destroy()
     qProgressBar.mainloop()
 
-    vObjects.SetName(str(vObjects.GetName()) + ' - Analyzed Contact Events')
-    vImarisApplication.GetSurpassScene().AddChild(vObjects, -1);
+
 
     ###############################################################################
     ###############################################################################
