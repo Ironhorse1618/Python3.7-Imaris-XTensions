@@ -58,7 +58,6 @@ from tkinter import messagebox
 from tkinter import simpledialog
 from tkinter.ttk import *
 import ImarisLib
-aImarisId=0
 
 def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     # Create an ImarisLib object
@@ -191,20 +190,22 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     namesSpots.set(vNamesSpots)
     lstbox2 = Listbox(main, listvariable=namesSpots, selectmode=SINGLE, width=20, height=10)
     lstbox2.grid(column=2, row=0, columnspan=2)
-
     def selectSurface():
-        global SecondarySelection,qObjectAnalyzed
-        SecondarySelection = list()
+        global SecondarySelectionSurfaces,qObjectAnalyzed
+        SecondarySelectionSurfaces = list()
         selection = lstbox.curselection()
         for i in selection:
             entrada = lstbox.get(i)
-            SecondarySelection.append(entrada)
+            SecondarySelectionSurfaces.append(entrada)
     #Test for the correct number selected
-        if len(SecondarySelection)!=1:
+        if len(SecondarySelectionSurfaces)!=1:
             messagebox.showerror(title='Surface menu',
                           message='Please Select 1 surfaces')
             main.mainloop()
-        elif SecondarySelection==PrimarySelection:
+        elif SecondarySelectionSurfaces==PrimarySelection:
+            messagebox.showerror(title='Surface menu',
+                          message='Primary and Target Object are the same!!/n'
+                          'Please Select Different Object')
             main.mainloop()
         else:
             qObjectAnalyzed = 'Surfaces'
@@ -223,6 +224,9 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
                           message='Please Select 1 Spots')
             main.mainloop()
         elif SecondarySelectionSpots==PrimarySelection:
+            messagebox.showerror(title='Surface menu',
+                          message='Primary and Target Object are the same!!/n'
+                          'Please Select Different Object')
             main.mainloop()
         else:
             qObjectAnalyzed = 'Spots'
@@ -233,7 +237,6 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
 
     Button2 = Button(main, text="ANALYZE tracked Spots", command=selectSpots)
     Button2.grid(column=2, row=1)
-    qObjectAnalyzed = []
     #Select Surpass Selected object
     qCheckSurfaces = [idx for idx, val in enumerate(vNamesSurfaces) if val in vSurpassSelectionName]
     qCheckSpots = [idx for idx, val in enumerate(vNamesSpots) if val in vSurpassSelectionName]
@@ -242,27 +245,26 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     if qCheckSpots:
         lstbox2.selection_set([vNamesSpots.index(vSurpassSelectionName)])
         vNamesSpots.index(vSurpassSelectionName)
-
-
     main.mainloop()
+
     ####################################################################
     ####################################################################
     #INput Distance THreshold of Surface overlap %
-    main = Tk()
-    main.title("Kiss and Run")
-    main.geometry("+250+100")
-    main.attributes("-topmost", True)
+    main2 = Tk()
+    main2.title("Kiss and Run")
+    main2.geometry("+250+100")
+    main2.attributes("-topmost", True)
 
     #################################################################
     #Set input in center on screen
     # Gets the requested values of the height and widht.
-    windowWidth = main.winfo_reqwidth()
-    windowHeight = main.winfo_reqheight()
+    windowWidth = main2.winfo_reqwidth()
+    windowHeight = main2.winfo_reqheight()
     # Gets both half the screen width/height and window width/height
-    positionRight = int(main.winfo_screenwidth()/2 - windowWidth/2)
-    positionDown = int(main.winfo_screenheight()/2 - windowHeight/2)
+    positionRight = int(main2.winfo_screenwidth()/2 - windowWidth/2)
+    positionDown = int(main2.winfo_screenheight()/2 - windowHeight/2)
     # Positions the window in the center of the page.
-    main.geometry("+{}+{}".format(positionRight, positionDown))
+    main2.geometry("+{}+{}".format(positionRight, positionDown))
     ##################################################################
 
     var1 = tk.IntVar(value=1)
@@ -278,36 +280,38 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         if var1.get()==1 and var2.get()==1:
             messagebox.showerror(title='Selection',
                           message='Please Choose only 1 option!!!')
-            main.mainloop()
+            main2.mainloop()
         elif var1.get()==0 and var2.get()==0:
             messagebox.showerror(title='Selection',
                           message='Please Choose 1 !!!')
-            main.mainloop()
+            main2.mainloop()
         elif var1.get()==1 and var2.get()==0:
             qDistanceMethod = True
-        else:
+            qOverlapMethod = False
+        elif var1.get()==0 and var2.get()==1:
             qOverlapMethod = True
+            qDistanceMethod = False
 
-        main.destroy()
-        main.mainloop()
+        main2.destroy()
+        main2.mainloop()
 
-    tk.Label(main, width=30, font=("Arial", 13, 'bold'),text='Choose One Contact Event Method').grid(row=0, column=0, sticky=W)
-    tk.Checkbutton(main, text='Distance Threshold',
+    tk.Label(main2, width=30, font=("Arial", 13, 'bold'),text='Choose One Contact Event Method').grid(row=0, column=0, sticky=W)
+    tk.Checkbutton(main2, text='Distance Threshold',
                    variable=var1, onvalue=1, offvalue=0).grid(row=1, column=0, sticky=W)
-    Entry1=Entry(main,justify='center',width=4)
+    Entry1=Entry(main2,justify='center',width=4)
     Entry1.grid(row=1, column=0,sticky=W,padx=165)
     Entry1.insert(0, '0')
 
-    tk.Checkbutton(main, text='Overlap Percentage (%)',
+    tk.Checkbutton(main2, text='Overlap Percentage (%)',
                    variable=var2, onvalue=1, offvalue=0).grid(row=2, column=0, sticky=W)
-    Entry2=Entry(main,justify='center',width=4)
+    Entry2=Entry(main2,justify='center',width=4)
     Entry2.grid(row=2, column=0, sticky=W, padx=180)
     Entry2.insert(0, '20')
 
-    btn = Button(main, text="Analyze Contact Events", command=Threshold)
+    btn = Button(main2, text="Analyze Contact Events", command=Threshold)
     btn.grid(column=0, row=3)
 
-    main.mainloop()
+    main2.mainloop()
 
 
     ##################################################################
@@ -347,8 +351,6 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     progress_bar1['value'] = 0
     qProgressBar.update_idletasks()
 
-
-
     ####################################################################
     ####################################################################
     ####################################################################
@@ -361,9 +363,8 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         vObjects=vImarisApplication.GetFactory().ToSpots(vDataItem)
         vSpotsRadius = vObjects.GetRadii()
         vSpotsPositionXYZ = vObjects.GetPositionsXYZ()
-
-    else:
-        vDataItem=vScene.GetChild(NamesSurfaceIndex[(vNamesSurfaces.index( ''.join(map(str, SecondarySelection[0]))))])
+    elif qObjectAnalyzed == 'Surfaces':
+        vDataItem=vScene.GetChild(NamesSurfaceIndex[(vNamesSurfaces.index( ''.join(map(str, SecondarySelectionSurfaces[0]))))])
         vObjects=vImarisApplication.GetFactory().ToSurfaces(vDataItem)
 
     ####################################################################
@@ -385,7 +386,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         zStatisticTimeIndex = np.array([vObjects.GetStatisticsByName('Time Index').mValues])
         zStatisticTimePoint = np.array([vObjects.GetStatisticsByName('Time').mValues])
 
-    else:
+    elif qObjectAnalyzed == 'Surfaces':
         vObjectEdges = vObjects.GetTrackEdges()
         vObjectTrackIds = vObjects.GetTrackIds()
         vObjectTrackIDsUnique = np.unique(np.array(vObjectTrackIds))
@@ -414,9 +415,12 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         #Row3=ShortestDistance ObjectID
         zCombined=np.vstack([zStatisticShortestDistancePrimary, zStatisticTimeIndex,zStatisticTimePoint,zStatisticShortestDistanceIDPrimary])
 
-
+        qAdjRow = 0
+        qThreshold = qDistanceThreshold
         #Add Surface specific statistics (OverlapVolumeRatio)
-        if qObjectAnalyzed == 'Surfaces':
+        if (qObjectAnalyzed == 'Surfaces') and (qOverlapMethod == True):
+            qAdjRow = 4
+            qThreshold = qSurfaceOverlapPercentage
             zStatisticOverlapVolumeRatio = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mValues)
             zStatisticOverlapVolumeRatioID = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mIds)
             zStatisticOverlapVolumeRatiofactors = np.array(vObjects.GetStatisticsByName('Overlapped Volume Ratio to Surfaces').mFactors)
@@ -463,12 +467,6 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     wNumberOfProlongedContactEventsPerTrack = []
     wNumberOfContactEventsPerTrack = []
 
-    #Which method of coloc
-    if qDistanceMethod:
-        qThreshold = qDistanceThreshold
-    else:
-        qThreshold = qSurfaceOverlapPercentage
-
     for aTrackLoopIndex in range (len(vObjectTrackIDsUnique)):
         wPerTrackLengthContactEvents = []
         #grab current track edges
@@ -485,12 +483,6 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         #ReOrder track based on Timeindex - assuming no branching
         zCurrentTrack=zCurrentTrack[:, zCurrentTrack[1, :].argsort()]
 
-        # #Which method of coloc
-        # if qDistanceMethod:
-        #     qThreshold = qDistanceThreshold
-        # else:
-        #     qThreshold = qSurfaceOverlapPercentage
-        #######
         #Test whether the current track has gap with no spot
         qTrackContinuity=sorted(zCurrentTrack[1]) == list(range(int(min(zCurrentTrack[1])), int(max(zCurrentTrack[1])+1)))
 
@@ -506,7 +498,7 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
         #loop for each missing Integer
             for aIndex in range(len(zMissingInts)):
                 #set fake colume at same height as current track
-                if qObjectAnalyzed == "Surfaces":
+                if qObjectAnalyzed == True:
                     aNew_column = ['999999', zMissingInts[aIndex],999999,999999,-999999]
                     aCount = aCount + 1
                 else:
@@ -515,14 +507,14 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
                 aInsertIndex=(np.where(zCurrentTrack[1]==zMissingInts[aIndex]-1))[0].tolist()
                 zCurrentTrack = np.insert(zCurrentTrack, aInsertIndex[0]+1, aNew_column, axis=1)
 
-        wPerTrackTotalNumberOfContacts.append(np.count_nonzero((zCurrentTrack[0] <= qThreshold)
-                                              & (zCurrentTrack[0]!=999999)))
-        wPerTrackTotalNumberOfNonContacts.append(np.count_nonzero((zCurrentTrack[0] > qThreshold)
-                                              & (zCurrentTrack[0]!=999999)))
-        wPerTrackPercentageOfContact.append(np.count_nonzero(zCurrentTrack[0] <= qThreshold)/((len(zCurrentTrack[0])-aCount))*100)
-        wPerTrackPercentageOfNonContact.append(np.count_nonzero(zCurrentTrack[0] > qThreshold)/((len(zCurrentTrack[0])-aCount))*100)
+        wPerTrackTotalNumberOfContacts.append(np.count_nonzero((zCurrentTrack[0+qAdjRow] <= qThreshold)
+                                              & (zCurrentTrack[0+qAdjRow]!=999999)))
+        wPerTrackTotalNumberOfNonContacts.append(np.count_nonzero((zCurrentTrack[0+qAdjRow] > qThreshold)
+                                              & (zCurrentTrack[0+qAdjRow]!=999999)))
+        wPerTrackPercentageOfContact.append(np.count_nonzero(zCurrentTrack[0+qAdjRow] <= qThreshold)/((len(zCurrentTrack[0+qAdjRow])-aCount))*100)
+        wPerTrackPercentageOfNonContact.append(np.count_nonzero(zCurrentTrack[0+qAdjRow] > qThreshold)/((len(zCurrentTrack[0+qAdjRow])-aCount))*100)
         #Test where corrected track objects have a contact event
-        zCurrentTrackContactBoolean=(zCurrentTrack[0] <= qThreshold)
+        zCurrentTrackContactBoolean=(zCurrentTrack[0+qAdjRow] <= qThreshold)
 
         #Find All Contact Events by group
         #Create a boolean list for each sequential contact event
@@ -542,19 +534,19 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
             # zCurrentTrack[2][np.argmax(zCurrentTrack[0] < qThreshold)+len(wProlongedContactEventsPreview[j])-1]
             #Test if contact even is single or multiple
             if len(wProlongedContactEventsPreview[j]) == 1:
-                qTestIndex=np.argmax(zCurrentTrackTemp[0] <= qThreshold)
+                qTestIndex=np.argmax(zCurrentTrackTemp[0+qAdjRow] <= qThreshold)
                 #Test is single contact event is at beginning or end or current track.
                 if qTestIndex == 0:
                     wPerTrackLengthContactEvents.append((zCurrentTrackTemp[2][qTestIndex+1]-zCurrentTrackTemp[2][qTestIndex])/2)
                 elif qTestIndex == (len(zCurrentTrackTemp[2])-1):
                     wPerTrackLengthContactEvents.append((zCurrentTrackTemp[2][qTestIndex]-zCurrentTrackTemp[2][qTestIndex-1])/2)
                 #Delete single point at index
-                zCurrentTrackTemp=np.delete(zCurrentTrack, np.argmax(zCurrentTrack[0] <= qThreshold),1)
+                zCurrentTrackTemp=np.delete(zCurrentTrack, np.argmax(zCurrentTrack[0+qAdjRow] <= qThreshold),1)
             else:
-                wPerTrackLengthContactEvents.append((zCurrentTrackTemp[2][np.argmax(zCurrentTrackTemp[0] <= qThreshold)+
-                        len(wProlongedContactEventsPreview[j])-1]) - (zCurrentTrackTemp[2][ np.argmax(zCurrentTrackTemp[0] <= qThreshold)]))
+                wPerTrackLengthContactEvents.append((zCurrentTrackTemp[2][np.argmax(zCurrentTrackTemp[0+qAdjRow] <= qThreshold)+
+                        len(wProlongedContactEventsPreview[j])-1]) - (zCurrentTrackTemp[2][ np.argmax(zCurrentTrackTemp[0+qAdjRow] <= qThreshold)]))
                 #Crop numpy array at last index of the current contact event
-                zCurrentTrackTemp=np.delete(zCurrentTrack,np.s_[0:np.argmax(zCurrentTrack[0] <= qThreshold) + len(wProlongedContactEventsPreview[j])],axis=1)
+                zCurrentTrackTemp=np.delete(zCurrentTrack,np.s_[0:np.argmax(zCurrentTrack[0+qAdjRow] <= qThreshold) + len(wProlongedContactEventsPreview[j])],axis=1)
                 # np.argmax(zCurrentTrack[0] < qThreshold) + len(wProlongedContactEventsPreview[j])
 
         #Determine the MAX duration per track from all contact events
@@ -582,9 +574,9 @@ def XT_MJG_Kiss_and_Run_beta2(aImarisId):
     wOverallTrackNumberContactEventsPerTimePoint = []
 
     # wAllworkingTrackData[aTrackIndex][1][np.where(wAllworkingTrackData[1][0] <= qThreshold)[0].tolist()].tolist()
-    zAllTimePointsOfContactEvents.extend(zCombined[1][np.where(zCombined[0] <= qThreshold)[0].tolist()].tolist())
+    zAllTimePointsOfContactEvents.extend(zCombined[1][np.where(zCombined[0+qAdjRow] <= qThreshold)[0].tolist()].tolist())
     #find indices of all contact events - for LABEL creation??
-    zAllIndexOfContactEvents.extend(zCombined[3][np.where(zCombined[0] <= qThreshold)[0].tolist()].tolist())
+    zAllIndexOfContactEvents.extend(zCombined[3][np.where(zCombined[0+qAdjRow] <= qThreshold)[0].tolist()].tolist())
 
     #count contact events per time point for Overall Stat object
     for aTimeIndex in range (vSizeT):
