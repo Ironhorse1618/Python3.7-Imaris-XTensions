@@ -9,6 +9,11 @@
     #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </Submenu>
+    #         <Submenu name="Spots Functions">
+    #             <Item name="Kiss and Run2 - Python" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
+    #             </Item>
+    #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
@@ -54,7 +59,7 @@ from tkinter import simpledialog
 from tkinter.ttk import *
 import ImarisLib
 aImarisId=0
-def XT_MJG_Kiss_and_Run_2
+def XT_MJG_Kiss_and_Run_2:
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
      # Get an imaris object with id aImarisId
@@ -557,7 +562,7 @@ def XT_MJG_Kiss_and_Run_2
             wPerTrackLengthMaxContactEvents.append(max(wPerTrackLengthContactEvents))
             wPerTrackLengthMeanContactEvents.append(mean(wPerTrackLengthContactEvents))
             wOverallTrackLengthContactEventsALL.append(wPerTrackLengthContactEvents)
-            wOverallContactTime=sum(wOverallTrackLengthContactEventsALL)
+            wOverallContactTime=sum([x for xs in wOverallTrackLengthContactEventsALL for x in xs])
 
         else:
             wPerTrackLengthMaxContactEvents.append([0])
