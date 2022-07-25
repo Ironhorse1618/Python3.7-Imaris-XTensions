@@ -5,15 +5,15 @@
     # <CustomTools>
     #     <Menu>
     #         <Submenu name="Surfaces Functions">
-    #             <Item name="Kiss and Run 2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_beta2(%i)</Command>
+    #             <Item name="Kiss and Run 2 - Python" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
-    #             <Item name="Kiss and Run 2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_beta2(%i)</Command>
+    #             <Item name="Kiss and Run 2" - Python icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Kiss_and_Run_2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -49,7 +49,7 @@ from tkinter import simpledialog
 from tkinter.ttk import *
 import ImarisLib
 aImarisId=0
-def XT_MJG_Kiss_and_Run2
+def XT_MJG_Kiss_and_Run_2
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
      # Get an imaris object with id aImarisId
