@@ -30,18 +30,38 @@
     # </CustomTools>
 
 #Description:
+#Primary surface - fixed or tracked surface object
+#Tracked surface - either a Surface or Spot object tracked over time
+
+#Contact event -  where tracked object is within defined threshold of Primary surface
+#       1.  Shortest Distance from Tracked Surface to primary
+#           ----Default distance threshold = 0 um (object is overlapping or inside of primay surface)
+#       2.  Overlap Percentage
+#           ----Trackedohas to have pre-defined amount of overlap (20% default)
+
+#Contact event - defined as any object where it meets the defined threshold
+#
+#Prolonged contact - defined by 2 or more consecutive timepoints with a contact event
+#           --Duration defined as time difference between first and last timepoints of the prologlonged contact event
+#Single Contact event duration
+#           ---Calculated as half the duration of the nearest time interval
+#           ---make sure it is different prolongevent that is 2 consecutive timepoints.
+
+#NOTE:  If there is a single gap between two contact events (prolonged or single)
+#        --Still treated as 2 contact events.
 
 
 
-# Track Statistics:
-#     Number of Contacts
-#     Percent Number of Contacts
-#     Number of Non Contacts
-#     Number of Prolonged Contacts - contact even 2 or more consecutive timepoints
-#     Total Contact time - time duration of
-#     Total non-contact time
-#     Longest Contact event
-#     Mean duration contact events
+# Per Track Statistics:
+#   Number of Contacts
+#   Percent Number of Contacts
+#   Number of Non Contacts
+#   Number of Prolonged Contacts
+#   Total Contact time
+#   Total non-contact time
+#   Longest Contact event
+#   Mean duration contact events
+#   Max duration contact event
 
 # Overall Statistics:
 #     Total Number of Contacts per TimePoint

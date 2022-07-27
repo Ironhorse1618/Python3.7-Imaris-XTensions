@@ -763,7 +763,7 @@ def XT_MJG_Filament_ShollAnalysis11(aImarisId):
         vNumberofShollIntersections=[]
         vNumberofIntersectionsPerShollSphere=[]
 
-        vNewFilamentStatCriticalRadiusHighRes=(np.argmax(np.array(vNumberofShollIntersectionsALL))).tolist()
+        vNewFilamentStatCriticalRadiusHighRes=(np.argmax(np.array(vNumberofShollIntersectionsALL))+1).tolist()
         vNewFilamentStatMaxIntersectionsHighRes=(np.max(np.array(vNumberofShollIntersectionsALL))).tolist()
 
     ###############################################################################
