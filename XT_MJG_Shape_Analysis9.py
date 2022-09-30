@@ -255,7 +255,7 @@ def XT_MJG_Shape_Analysis9(aImarisId):
     # Use the grid manager
     label_1.grid(row=0, column=0,pady=10)
     progress_bar.grid(row=0, column=1)
-    master.geometry('250x50')
+    master.geometry('270x50')
     master.attributes("-topmost", True)
 
 

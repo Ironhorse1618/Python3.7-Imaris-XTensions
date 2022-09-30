@@ -84,7 +84,7 @@ def XT_MJG_Surface_Surface_Overlap(aImarisId):
             vSmoothingFactor=0
             window.destroy()
         else:
-            vSmoothingFactor=[float(Entry1.get())]
+            vSmoothingFactor=float(Entry1.get())
             window.destroy()
 
     var1 = tk.IntVar(value=0)
