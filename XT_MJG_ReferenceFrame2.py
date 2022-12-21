@@ -229,7 +229,7 @@ def XT_MJG_ReferenceFrame2(aImarisId):
 
     qButtonSpot = Button(qInputBox, bg="red", fg="white", text="Selected Object",command=SelectedObject)
     qButtonSpot.grid(row=4, column=0, padx=60,sticky=W)
-    
+
     tk.Label(qInputBox, text='Please Select one Object\n'
                              'Click Button to move Reference Frame\n'
                              'To a selected Spot, Surface, or Filament').grid(row=5, column=0, padx=10,sticky=W)
@@ -246,7 +246,7 @@ def XT_MJG_ReferenceFrame2(aImarisId):
         vSpotsTimeIndices = vSpots.GetIndicesT()
         vSelectedIDs=vSpots.GetSelectedIndices()
         vSelectedSpotTimeIndex = vSpotsTimeIndices(vSelectedIDs)
-        
+
         if len(vSelectedIDs) == 1:
             vSelectedTimeIndex = vSpotsTimeIndices(vSelectedIDs)
             qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
