@@ -7,17 +7,17 @@
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSpots">
-#          <Item name="Reference Frame Adjustment" icon="Python3">
+#          <Item name="Reference Frame Adjustment3" icon="Python3">
 #            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #        <SurpassComponent name="bpSurfaces">
-#          <Item name="Reference Frame Adjustment" icon="Python3">
+#          <Item name="Reference Frame Adjustment3" icon="Python3">
 #            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #        <SurpassComponent name="bpFilaments">
-#          <Item name="Reference Frame Adjustment" icon="Python3">
+#          <Item name="Reference Frame Adjustment3" icon="Python3">
 #            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
@@ -125,11 +125,7 @@ def XT_MJG_ReferenceFrame3(aImarisId):
         qCurrentReferenceFrame=vImarisApplication.GetFactory().ToReferenceFrames(vDataItem)
 
     if not NamesReferenceFramesIndex:
-    # #Add a new Reference Frame
-        qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-        qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
-        vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-
+        qCreateNew = True
     if len(NamesReferenceFramesIndex) > 1:
         #####################################################
         #Making the Listbox for the Surpass menu
@@ -303,8 +299,6 @@ def XT_MJG_ReferenceFrame3(aImarisId):
                 qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
                 qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
                 vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-
-
             qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
                                   [[vSurfaces.GetCenterOfMass(vSelectedIDs[0])[0][0],
                                     vSurfaces.GetCenterOfMass(vSelectedIDs[0])[0][1],
