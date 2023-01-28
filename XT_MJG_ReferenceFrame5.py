@@ -7,18 +7,18 @@
 #      </Menu>
 #      <SurpassTab>
 #        <SurpassComponent name="bpSpots">
-#          <Item name="Reference Frame Adjustment3" icon="Python3">
-#            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
+#          <Item name="Reference Frame Adjustment5" icon="Python3">
+#            <Command>Python3XT::XT_MJG_ReferenceFrame5(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #        <SurpassComponent name="bpSurfaces">
-#          <Item name="Reference Frame Adjustment3" icon="Python3">
-#            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
+#          <Item name="Reference Frame Adjustment5" icon="Python3">
+#            <Command>Python3XT::XT_MJG_ReferenceFrame5(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #        <SurpassComponent name="bpFilaments">
-#          <Item name="Reference Frame Adjustment3" icon="Python3">
-#            <Command>Python3XT::XT_MJG_ReferenceFrame3(%i)</Command>
+#          <Item name="Reference Frame Adjustment5" icon="Python3">
+#            <Command>Python3XT::XT_MJG_ReferenceFrame5(%i)</Command>
 #          </Item>
 #        </SurpassComponent>
 #      </SurpassTab>
@@ -39,7 +39,7 @@ from tkinter import simpledialog
 import ImarisLib
 
 aImarisId=0
-def XT_MJG_ReferenceFrame3(aImarisId):
+def XT_MJG_ReferenceFrame5(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -50,7 +50,7 @@ def XT_MJG_ReferenceFrame3(aImarisId):
     vImage = vImarisApplication.GetDataSet()
     # Get the Surpass scene
     vSurpassScene = vImarisApplication.GetSurpassScene()
-
+    
     ##################################################################
     ##################################################################
     #Get image properties
@@ -62,10 +62,14 @@ def XT_MJG_ReferenceFrame3(aImarisId):
     Xvoxelspacing= (vExtendMax[0]-vExtendMin[0])/vImageSize[0]
     Yvoxelspacing= (vExtendMax[1]-vExtendMin[1])/vImageSize[1]
     Zvoxelspacing = round((vExtendMax[2]-vExtendMin[2])/vImageSize[2],3)
-
+    
     vMidX = round((vExtendMax[0]-vExtendMin[0])/2,2)
     vMidY = round((vExtendMax[1]-vExtendMin[1])/2,2)
     vMidZ = round((vExtendMax[2]-vExtendMin[2])/2,2)
+    
+    vCurrentVisibleTimeIndex=vImarisApplication.GetVisibleIndexT()
+    
+    
     #Test to see what is the Surpass object TYPE
     vIsSpots = vImarisApplication.GetFactory().IsSpots(vImarisApplication.GetSurpassSelection())
     vIsSurfaces = vImarisApplication.GetFactory().IsSurfaces(vImarisApplication.GetSurpassSelection())
@@ -76,11 +80,11 @@ def XT_MJG_ReferenceFrame3(aImarisId):
         qMethod = "surface"
     if vIsFilaments == True:
         qMethod = "filament"
-
+    qCreateNew=False
     ##################################################################
     ##################################################################
     global NamesSurfaces, NamesSpots,NamesFilaments
-
+    
     NamesSurfaces=[]
     NamesSpots=[]
     NamesFilaments=[]
@@ -89,7 +93,7 @@ def XT_MJG_ReferenceFrame3(aImarisId):
     NamesSpotsIndex=[]
     NamesReferenceFrames=[]
     NamesReferenceFramesIndex=[]
-
+    
     vSurpassSurfaces = 0
     vSurpassSpots = 0
     vSurpassFilaments = 0
@@ -117,13 +121,13 @@ def XT_MJG_ReferenceFrame3(aImarisId):
             vSurpassReferenceFrame = vSurpassReferenceFrame+1
             NamesReferenceFrames.append(vDataItem.GetName(),)
             NamesReferenceFramesIndex.append(vChildIndex)
-
+    
     ############################################################################
     #Choose Reference Frame Surpass scene object
     if len(NamesReferenceFramesIndex) == 1:
         vDataItem=vSurpassScene.GetChild(NamesReferenceFramesIndex[0])
         qCurrentReferenceFrame=vImarisApplication.GetFactory().ToReferenceFrames(vDataItem)
-
+    
     if not NamesReferenceFramesIndex:
         qCreateNew = True
     if len(NamesReferenceFramesIndex) > 1:
@@ -135,7 +139,7 @@ def XT_MJG_ReferenceFrame3(aImarisId):
         frame = ttk.Frame(main, padding=(3, 3, 12, 12))
         frame.grid(column=0, row=0, sticky=(N, S, E, W))
         main.attributes("-topmost", True)
-
+    
         #################################################################
         #Set input in center on screen
         # Gets the requested values of the height and widht.
@@ -165,40 +169,43 @@ def XT_MJG_ReferenceFrame3(aImarisId):
                 main.mainloop()
             else:
                 main.destroy()
-
+    
         btn = ttk.Button(frame, text="Choose Reference Frame To Move", command=select)
         btn.grid(column=1, row=1)
         #Selects the top items in the list
         lstbox.selection_set(0)
         main.mainloop()
-
+    
         vDataItem=vSurpassScene.GetChild(NamesReferenceFramesIndex[(NamesReferenceFrames.index( ''.join(map(str, ObjectSelection[0]))))])
         qCurrentReferenceFrame=vImarisApplication.GetFactory().ToReferenceFrames(vDataItem)
-
+    
     ##################################################################
     ##################################################################
     def ButtonManual ():
-        global vNewPosX,vNewPosY,vNewPosZ, qMethod, qCreateNew
-        global vMidX, vMidY, vMidZ
+        global vNewPosX,vNewPosY,vNewPosZ,vNewTime, qCreateNew
+        global vMidX, vMidY, vMidZ, vIsManual
         vNewPosX=EntryX.get()
         vNewPosY=EntryY.get()
         vNewPosZ=EntryZ.get()
-        qMethod = 'manual'
+        vNewTime=EntryTime.get()
+        vIsManual = 1
+        # qMethod = 'manual'
         if var1.get() == 1:
             qCreateNew = True
         qInputBox.destroy()
-
+    
     def SelectedObject ():
-        global qCreateNew
+        global qCreateNew, vIsManual
+        vIsManual = 0
         if var1.get() == 1:
             qCreateNew = True
         qInputBox.destroy()
-
+    
     qInputBox=Tk()
     qInputBox.title("Reference Frame")
-    qInputBox.geometry("240x190")
+    qInputBox.geometry("300x190")
     var1 = tk.IntVar(value=0)
-
+    
     ##################################################################
     # Set Input Window to center of screen
     # Gets the requested values of the height and widht.
@@ -213,7 +220,7 @@ def XT_MJG_ReferenceFrame3(aImarisId):
     tk.Label(qInputBox, text=' ').grid(row=0, column=0)
     qButtonManual = Button(qInputBox, text="Reference Frame to manual position",command=ButtonManual)
     qButtonManual.grid(row=1, column=0, padx=10,sticky=W)
-
+    
     Label(qInputBox,text="X:").grid(row=2, column=0, padx=10,pady=10,sticky=W)
     EntryX=Entry(qInputBox,justify='center',width=4)
     EntryX.grid(row=2, column=0, padx=30,sticky=W)
@@ -226,29 +233,35 @@ def XT_MJG_ReferenceFrame3(aImarisId):
     EntryZ=Entry(qInputBox,justify='center',width=4)
     EntryZ.grid(row=2, column=0, padx=170,sticky=W)
     EntryZ.insert(0, str(vMidZ))
-
+    Label(qInputBox,text="T:").grid(row=2, column=0, padx=220, sticky=W)
+    EntryTime=Entry(qInputBox,justify='center',width=4)
+    EntryTime.grid(row=2, column=0, padx=240,sticky=W)
+    EntryTime.insert(0, str(vCurrentVisibleTimeIndex))
+    
     qButtonSpot = Button(qInputBox, text="Reference Frame to Selected Object",command=SelectedObject)
     qButtonSpot.grid(row=4, column=0,padx=10,sticky=W)
-
+    
     tk.Label(qInputBox, text='Please Select one Object\n'
                              'Move Reference Frame\n'
                              '(Spot, Surface, or Filament)').grid(row=5, column=0, padx=30,sticky=W)
-
+    
     tk.Checkbutton(qInputBox, text='Create a New Reference Frame',
                    variable=var1, onvalue=1, offvalue=0).grid(row=6, column=0,padx=10,sticky=W)
-
+    
     qInputBox.mainloop()
-
+    
     ##################################################################
-    if qMethod == 'manual':
+    if vIsManual == 1:
         if qCreateNew == True:
             # #Add a new Reference Frame
-                qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
-                vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
+            qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vCurrentVisibleTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
+            vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
         else:
-            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vNewPosX),float(vNewPosY),float(vNewPosZ)]])
-    if qMethod == 'spot':
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vCurrentVisibleTimeIndex],[[float(vNewPosX)-vExtendMin[0],
+                                                                                          float(vNewPosY)-vExtendMin[1],
+                                                                                          float(vNewPosZ)-vExtendMin[2]]])
+    if qMethod == 'spot' and vIsManual == 0:
         #get the spot data
         vSpots = vFactory.ToSpots(vImarisApplication.GetSurpassSelection())
         vSpotsPositionsXYZ = vSpots.GetPositionsXYZ()
@@ -260,14 +273,16 @@ def XT_MJG_ReferenceFrame3(aImarisId):
             if qCreateNew == True:
             # #Add a new Reference Frame
                 qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
+                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
                 vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-
-
-            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
-                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0],
-                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1],
-                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]]])
+    
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],
+                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0]-vExtendMin[0],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1]-vExtendMin[1],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]-vExtendMin[2]]])
+    
+            # vSpotsPositionsXYZ[vSelectedIDs[0]][1]-vExtendMin[1]
+    
         else:
             messagebox.showerror(title='Reference Frame menu',
                                         message='Please select one spot')
@@ -278,18 +293,18 @@ def XT_MJG_ReferenceFrame3(aImarisId):
                 if qCreateNew == True:
                 # #Add a new Reference Frame
                     qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-                    qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
+                    qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
                     vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-
-                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
-                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0],
-                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1],
-                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]]])
+    
+                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],
+                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0]-vExtendMin[0],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1]-vExtendMin[1],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]-vExtendMin[2]]])
             else:
                 messagebox.showerror(title='Reference Frame menu',
                                             message='XTension will shut down\n'
                                             'Please select one Spot and try again!')
-    if qMethod == 'surface':
+    if qMethod == 'surface'and vIsManual == 0:
         vSurfaces = vFactory.ToSurfaces(vImarisApplication.GetSurpassSelection())
         vSelectedIDs=vSurfaces.GetSelectedIndices()
         if len(vSelectedIDs) == 1:
@@ -297,12 +312,14 @@ def XT_MJG_ReferenceFrame3(aImarisId):
             if qCreateNew == True:
             # #Add a new Reference Frame
                 qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
+                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
                 vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
-                                  [[vSurfaces.GetCenterOfMass(vSelectedIDs[0])[0][0],
-                                    vSurfaces.GetCenterOfMass(vSelectedIDs[0])[0][1],
-                                    vSurfaces.GetCenterOfMass(vSelectedIDs[0])[0][2]]])
+    
+    
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],
+                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0]-vExtendMin[0],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1]-vExtendMin[1],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]-vExtendMin[2]]])
         else:
             messagebox.showerror(title='Reference Frame menu',
                                  message='Please select one spot')
@@ -312,28 +329,35 @@ def XT_MJG_ReferenceFrame3(aImarisId):
                 if qCreateNew == True:
                 # #Add a new Reference Frame
                     qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
-                    qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],[[float(vMidX),float(vMidY),float(vMidZ)]])
+                    qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
                     vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
-
-                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
-                                 [[vSpotsColocPositionsXYZ[vSelectedIDs[0]][0],
-                                  vSpotsColocPositionsXYZ[vSelectedIDs[0]][1],
-                                  vSpotsColocPositionsXYZ[vSelectedIDs[0]][2]]])
+    
+                qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],
+                                 [[vSpotsPositionsXYZ[vSelectedIDs[0]][0]-vExtendMin[0],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][1]-vExtendMin[1],
+                                  vSpotsPositionsXYZ[vSelectedIDs[0]][2]-vExtendMin[2]]])
             else:
                 messagebox.showerror(title='Reference Frame menu',
                                             message='XTension will shut down\n'
                                             'Please select one Surface and try again!')
-    if qMethod == 'filament':
+    if qMethod == 'filament'and vIsManual == 0:
         vFilaments = vFactory.ToFilaments(vImarisApplication.GetSurpassSelection())
         vNumberOfFilaments = vFilaments.GetNumberOfFilaments()
+        if qCreateNew == True:
+        # #Add a new Reference Frame
+            qCurrentReferenceFrame=vImarisApplication.GetFactory().CreateReferenceFrames()
+            vSelectedSpotTimeIndex = vFilaments.GetTimeIndex
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],[[float(vMidX),float(vMidY),float(vMidZ)]])
+            vImarisApplication.GetSurpassScene().AddChild(qCurrentReferenceFrame, -1)
         for aNextFilament in range (vNumberOfFilaments):
-            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([0],
-                            [[vFilaments.GetPositionsXYZ(aNextFilament)[0][0],
-                            vFilaments.GetPositionsXYZ(aNextFilament)[0][1],
-                            vFilaments.GetPositionsXYZ(aNextFilament)[0][2]]])
+            vSelectedSpotTimeIndex = vFilaments.GetTimeIndex(aNextFilament)
+            qCurrentReferenceFrame.SetKeyFramesPositionsXYZT([vSelectedSpotTimeIndex],
+                            [[vFilaments.GetPositionsXYZ(aNextFilament)[0][0]-vExtendMin[0],
+                            vFilaments.GetPositionsXYZ(aNextFilament)[0][1]-vExtendMin[1],
+                            vFilaments.GetPositionsXYZ(aNextFilament)[0][2]-vExtendMin[2]]])
             messagebox.askyesno(title='Reference Frame menu',
                             message='Is this the correct Position?')
-
-#Need to add option to move specific Reference Frame at specific time.
-
-
+    
+    #Need to add option to move specific Reference Frame at specific time.
+    
+    

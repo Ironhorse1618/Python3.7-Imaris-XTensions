@@ -12,15 +12,15 @@
     #<CustomTools>
         #<Menu>
             #<Submenu name="Filaments Functions">
-                #<Item name="Filament Sholl Analysis11" icon="Python3">
-                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis11(%i)</Command>
+                #<Item name="Filament Sholl Analysis13" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis13(%i)</Command>
                 #</Item>
             #</Submenu>
        #</Menu>
        #<SurpassTab>
            #<SurpassComponent name="bpFilaments">
-               #<Item name="Filament Sholl Analysis11" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis11(%i)</Command>
+               #<Item name="Filament Sholl Analysis13" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis13(%i)</Command>
                #</SurpassComponent>
            #</SurpassTab>
     #</CustomTools>
@@ -80,6 +80,7 @@ from numpy import array
 import platform
 
 # GUI imports
+# GUI imports
 import tkinter as tk
 from tkinter import ttk
 from tkinter.ttk import *
@@ -104,7 +105,7 @@ import collections
 import ImarisLib
 
 aImarisId=0
-def XT_MJG_Filament_ShollAnalysis11(aImarisId):
+def XT_MJG_Filament_ShollAnalysis13(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -124,6 +125,11 @@ def XT_MJG_Filament_ShollAnalysis11(aImarisId):
     vNew_Spots = vImarisApplication.GetFactory()
     result2 = vNew_Spots.CreateDataContainer()
     result2.SetName('Sholl Intersections - ' + str(vFilaments.GetName))
+    #Get Imaris Version
+    aVersion = vImarisApplication.GetVersion()
+
+    aVersionValue=float(aVersion[7:11])
+
 
     # vFilaments.SetVisible(0)
 
@@ -836,12 +842,23 @@ def XT_MJG_Filament_ShollAnalysis11(aImarisId):
         vImarisApplication.GetSurpassScene().AddChild(vShollDendrites, -1)
 
     #Get Dendrite position stats
+        if aVersionValue < 10:
         # zStatisticNames = vNewFilaments.GetStatisticsNames()
-        zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Dendrite Position X').mValues
-        zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Dendrite Position Y').mValues
-        zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Dendrite Position Z').mValues
-        zStatisticDendriteLength= vNewFilaments.GetStatisticsByName('Dendrite Length').mValues
-        zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Dendrite Position X').mIds
+            zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Dendrite Position X').mValues
+            zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Dendrite Position Y').mValues
+            zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Dendrite Position Z').mValues
+            zStatisticDendriteLength= vNewFilaments.GetStatisticsByName('Dendrite Length').mValues
+            zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Dendrite Position X').mIds
+        else:
+            zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Segment Position X').mValues
+            zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Segment Position Y').mValues
+            zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Segment Position Z').mValues
+            zStatisticDendriteLength= vNewFilaments.GetStatisticsByName('Segment Length').mValues
+            zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Segemnt Position X').mIds
+
+
+
+
 
     #Measure distance from each Dendrite position to starting point
          #Collate XYZ positions in to a single list
@@ -1102,9 +1119,9 @@ def XT_MJG_Filament_ShollAnalysis11(aImarisId):
 
     #Use a reference frame to set the orientation space to measure from
     #Extract out the sholl position relative to the Ref Frame
-    #zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Dendrite Position X Reference frame').mValues
-    #zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Dendrite Position Y Reference frame').mValues
-    #zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Dendrite Position Z Reference frame').mValues
+    #zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Segment Position X Reference frame').mValues
+    #zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Segment Position Y Reference frame').mValues
+    #zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Segment Position Z Reference frame').mValues
 
 
 
@@ -1152,5 +1169,5 @@ def XT_MJG_Filament_ShollAnalysis11(aImarisId):
     ##############################################################################
     #Visibility of the Scene Objects
 
-    # elapsed = time.time() - start
-    # print(elapsed)
+    elapsed = time.time() - start
+    print(elapsed)
