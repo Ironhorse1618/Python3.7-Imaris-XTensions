@@ -12,15 +12,15 @@
     #<CustomTools>
         #<Menu>
             #<Submenu name="Filaments Functions">
-                #<Item name="Filament Sholl Analysis13" icon="Python3">
-                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis13(%i)</Command>
+                #<Item name="Filament Sholl Analysis14" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis14(%i)</Command>
                 #</Item>
             #</Submenu>
        #</Menu>
        #<SurpassTab>
            #<SurpassComponent name="bpFilaments">
-               #<Item name="Filament Sholl Analysis13" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis13(%i)</Command>
+               #<Item name="Filament Sholl Analysis14" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis14(%i)</Command>
                #</SurpassComponent>
            #</SurpassTab>
     #</CustomTools>
@@ -105,7 +105,7 @@ import collections
 import ImarisLib
 
 aImarisId=0
-def XT_MJG_Filament_ShollAnalysis13(aImarisId):
+def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -854,7 +854,7 @@ def XT_MJG_Filament_ShollAnalysis13(aImarisId):
             zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Segment Position Y').mValues
             zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Segment Position Z').mValues
             zStatisticDendriteLength= vNewFilaments.GetStatisticsByName('Segment Length').mValues
-            zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Segemnt Position X').mIds
+            zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Segment Position X').mIds
 
 
 
@@ -891,7 +891,10 @@ def XT_MJG_Filament_ShollAnalysis13(aImarisId):
         #Add Sholl Statistics
         vNewFilamentsStatvIds=list(range(len(zStatisticDendriteIds)))
         vNewFilamentsStatUnits=['']*(len(zStatisticDendriteIds))
-        vNewFilamentsStatFactors=(['Dendrite']*len(zStatisticDendriteIds), [str(vFilamentsIndexT+1)]*len(zStatisticDendriteIds))
+        if aVersionValue < 10:
+            vNewFilamentsStatFactors=(['Dendrite']*len(zStatisticDendriteIds), [str(vFilamentsIndexT+1)]*len(zStatisticDendriteIds))
+        else:
+            vNewFilamentsStatFactors=(['Segment']*len(zStatisticDendriteIds), [str(vFilamentsIndexT+1)]*len(zStatisticDendriteIds))
         vNewFilamentsStatFactorName=['Category','Time']
     #######################
         vNewFilamentsIdStat=[vFilamentIds[vFilamentCountActual-1]-100000000]*len(zStatisticDendriteIds)
@@ -1169,5 +1172,5 @@ def XT_MJG_Filament_ShollAnalysis13(aImarisId):
     ##############################################################################
     #Visibility of the Scene Objects
 
-    elapsed = time.time() - start
-    print(elapsed)
+    # elapsed = time.time() - start
+    # print(elapsed)

@@ -8,15 +8,15 @@
     #<CustomTools>
         #<Menu>
             #<Submenu name="Filaments Functions">
-                #<Item name="Filament Analysis28" icon="Python3">
-                    #<Command>Python3XT::XT_MJG_Filament_Analysis28(%i)</Command>
+                #<Item name="Filament Analysis29" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_Filament_Analysis29(%i)</Command>
                 #</Item>
             #</Submenu>
        #</Menu>
        #<SurpassTab>
            #<SurpassComponent name="bpFilaments">
-               #<Item name="Filament Analysis28" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_Filament_Analysis28(%i)</Command>
+               #<Item name="Filament Analysis29" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_Filament_Analysis29(%i)</Command>
                #</SurpassComponent>
            #</SurpassTab>
     #</CustomTools>
@@ -95,7 +95,7 @@ import collections
 
 import ImarisLib
 aImarisId=0
-def XT_MJG_Filament_Analysis28(aImarisId):
+def XT_MJG_Filament_Analysis29(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -236,7 +236,7 @@ def XT_MJG_Filament_Analysis28(aImarisId):
     var4High=tk.IntVar(value=0)#bouton sensitivity
 
     tk.Label(window, font="bold", text='Choose Analysis Options!').grid(row=0,column=0, padx=75,sticky=W)
-    tk.Checkbutton(window, text='Measure Intensity of Dendrite',
+    tk.Checkbutton(window, text='Measure Intensity of Dendrite Imarisv9.1 or earlier',
                     variable=var1, onvalue=1, offvalue=0).grid(row=1, column=0, padx=40,sticky=W)
     tk.Checkbutton(window, text='Export Filament as a Spots object',
                     variable=var2, onvalue=1, offvalue=0).grid(row=2, column=0, padx=40,sticky=W)
@@ -2530,7 +2530,10 @@ def XT_MJG_Filament_Analysis28(aImarisId):
 
         vFilamentStatvIds=list(range(len(vAllFilamentDendriteLength)))
         vFilamentStatUnits=['']*(len(vAllFilamentDendriteLength))
-        vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        if aVersionValue < 10:
+            vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        else:
+            vFilamentStatFactors=(['Segment']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
         vFilamentStatFactorName=['Category','Time']
     #######################
         vFilamentStatNames=[' Dendrite Bouton Number']*(len(vAllFilamentDendriteLength))
@@ -2549,7 +2552,10 @@ def XT_MJG_Filament_Analysis28(aImarisId):
     if vOptionDendriteToDendriteContact==1:
         vFilamentStatvIds=list(range(len(vAllFilamentDendriteLength)))
         vFilamentStatUnits=['']*(len(vAllFilamentDendriteLength))
-        vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        if aVersionValue < 10:
+            vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        else:
+            vFilamentStatFactors=(['Segment']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
         vFilamentStatFactorName=['Category','Time']
     #######################
         vFilamentStatNames=[' Dendrite-Dendrite Contacts']*(len(vAllFilamentDendriteLength))
@@ -2560,7 +2566,10 @@ def XT_MJG_Filament_Analysis28(aImarisId):
     if vOptionFilamentToFilamentContact==1:
         vFilamentStatvIds=list(range(len(vAllFilamentDendriteLength)))
         vFilamentStatUnits=['']*(len(vAllFilamentDendriteLength))
-        vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        if aVersionValue < 10:
+            vFilamentStatFactors=(['Dendrite']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
+        else:
+            vFilamentStatFactors=(['Segment']*len(vAllFilamentDendriteLength), [str(x) for x in wCompleteDendriteTimeIndex] )
         vFilamentStatFactorName=['Category','Time']
     #######################
         vFilamentStatNames=[' Filament-Filament Coloc Contacts']*(len(vAllFilamentDendriteLength))
@@ -2681,7 +2690,12 @@ def XT_MJG_Filament_Analysis28(aImarisId):
         #ADD Spot number&Density to Filament Distance statistic.
         vFilamentStatvIds=list(range(len(wCompleteDendriteSegmentIds)))
         vFilamentStatUnits=['']*(len(wCompleteDendriteSegmentIds))
-        vFilamentStatFactors=(['Dendrite']*len(wCompleteDendriteSegmentIds), [str(x) for x in wCompleteDendriteTimeIndex] )
+        if aVersionValue < 10:
+            vFilamentStatFactors=(['Dendrite']*len(wCompleteDendriteSegmentIds), [str(x) for x in wCompleteDendriteTimeIndex] )
+        else:
+            vFilamentStatFactors=(['Segment']*len(wCompleteDendriteSegmentIds), [str(x) for x in wCompleteDendriteTimeIndex] )
+
+
         vFilamentStatFactorName=['Category','Time']
         vFilamentStatNames=[' Dendrite Coloc Number Spots']*(len(wCompleteDendriteSegmentIds))
         vFilaments.AddStatistics(vFilamentStatNames, wNumberOfSpotsPerDendrite,
