@@ -114,7 +114,8 @@ def XT_MJG_Filament_Analysis29(aImarisId):
 
     #Get Imaris Version
     aVersion = vImarisApplication.GetVersion()
-    aVersionValue=float(aVersion[7:11])
+    a=aVersion.find('x64')+4
+    aVersionValue=float(aVersion[a:a+3])
 
 
     ############################################################################

@@ -127,8 +127,8 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     result2.SetName('Sholl Intersections - ' + str(vFilaments.GetName))
     #Get Imaris Version
     aVersion = vImarisApplication.GetVersion()
-
-    aVersionValue=float(aVersion[7:11])
+    a=aVersion.find('x64')+4
+    aVersionValue=float(aVersion[a:a+3])
 
 
     # vFilaments.SetVisible(0)
