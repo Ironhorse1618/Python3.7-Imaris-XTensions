@@ -1,8 +1,8 @@
-# Filament Analysis
+# Filament Sholl Analysis
 #
 # Written by Matthew J. Gastinger
 #
-# June 2022 - Imaris 9.9.1
+# June 2022 - Imaris 10
 #
 # ---  Updates:
 #   1. Adding a new feature to segment dendrites within each Sholl sphere
@@ -12,15 +12,15 @@
     #<CustomTools>
         #<Menu>
             #<Submenu name="Filaments Functions">
-                #<Item name="Filament Sholl Analysis14" icon="Python3">
-                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis14(%i)</Command>
+                #<Item name="Filament Sholl Analysis15" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis15(%i)</Command>
                 #</Item>
             #</Submenu>
        #</Menu>
        #<SurpassTab>
            #<SurpassComponent name="bpFilaments">
-               #<Item name="Filament Sholl Analysis14" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis14(%i)</Command>
+               #<Item name="Filament Sholl Analysis15" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_Filament_ShollAnalysis15(%i)</Command>
                #</SurpassComponent>
            #</SurpassTab>
     #</CustomTools>
@@ -105,7 +105,7 @@ import collections
 import ImarisLib
 
 aImarisId=0
-def XT_MJG_Filament_ShollAnalysis14(aImarisId):
+def XT_MJG_Filament_ShollAnalysis15(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -116,11 +116,11 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     vImage = vImarisApplication.GetDataSet()
     # Get the Surpass scene
     vSurpassScene = vImarisApplication.GetSurpassScene()
-
+    
     # vSurfaces = vFactory.ToSurfaces(vImarisApplication.GetSurpassSelection())
     # vSpots = vFactory.ToSpots(vImarisApplication.GetSurpassSelection())
     vFilaments = vFactory.ToFilaments(vImarisApplication.GetSurpassSelection())
-
+    
     #Create a new folder object for new Sholl Spot intersections
     vNew_Spots = vImarisApplication.GetFactory()
     result2 = vNew_Spots.CreateDataContainer()
@@ -129,10 +129,10 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     aVersion = vImarisApplication.GetVersion()
     a=aVersion.find('x64')+4
     aVersionValue=float(aVersion[a:a+3])
-
-
+    
+    
     # vFilaments.SetVisible(0)
-
+    
     ##################################################################
     ##################################################################
     def ShollInput ():
@@ -143,12 +143,12 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vShollRadius=int(vShollRadius)
         # vMaxShollSphere=int(vMaxShollSphere)
         qInputBox.destroy()
-
+    
     qInputBox=Tk()
     qInputBox.title("Sholl Analysis")
     qInputBox.geometry("250x115")
     var1 = tk.IntVar(value=0)
-
+    
     # qInputBoxTitle = Label(qInputBox, text = "Sholl Analysis")
     # qInputBoxTitle.pack()
     Label(qInputBox,text="Sholl Sphere Radius (um):").grid(row=0, column=0)
@@ -167,26 +167,26 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     Entry1=Entry(qInputBox,justify='center',width=7)
     Entry1.grid(row=0, column=1)
     Entry1.insert(0, 20)
-
+    
     # Entry2=Entry(qInputBox,justify='center',width=10)
     # Entry2.grid(row=1, column=1)
     # Entry2.insert(0, 200)
-
+    
     tk.Checkbutton(qInputBox, text='Create Spots Objects \n'
                    'per Sholl sphere',
                    variable=var1, onvalue=1, offvalue=0).grid(row=2, column=0)
     tk.Label(qInputBox, text='').grid(row=3, column=0)
-
+    
     qWhatOS=platform.system()
     if qWhatOS=='Darwin':
         Single=Button(qInputBox, fg="black", text="Process Sholl Analysis",command=ShollInput )
     else:
         Single=Button(qInputBox, bg="blue", fg="white", text="Process Sholl Analysis",command=ShollInput )
-
-
+    
+    
     Single.grid(row=4, column=0, sticky=E)
-
-
+    
+    
     qInputBox.mainloop()
     ##################################################################
     ##################################################################
@@ -194,7 +194,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     #Creating a separate Tkinter qProgressBar for progress bars
     qProgressBar=tk.Tk()
     qProgressBar.title("Sholl Analysis")
-
+    
     # Create a progressbar widget
     progress_bar1 = ttk.Progressbar(qProgressBar, orient="horizontal",
                                   mode="determinate", maximum=100, value=0)
@@ -203,11 +203,11 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     # And a label for it
     label_1 = tk.Label(qProgressBar, text="Dendrite ReOrder")
     label_2 = tk.Label(qProgressBar, text="Filament Progress")
-
+    
     # Use the grid manager
     label_1.grid(row=0, column=0,pady=10)
     label_2.grid(row=1, column=0,pady=10)
-
+    
     progress_bar1.grid(row=0, column=1)
     progress_bar2.grid(row=1, column=1)
     ##################################################################
@@ -223,15 +223,15 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     ##################################################################
     qProgressBar.geometry('250x100')
     qProgressBar.attributes("-topmost", True)
-
+    
     # Necessary, as the qProgressBar object needs to draw the progressbar widget
     # Otherwise, it will not be visible on the screen
     qProgressBar.update_idletasks()
     progress_bar1['value'] = 0
     qProgressBar.update_idletasks()
-
+    
     start = time.time()
-
+    
     ##################################################################
     ##################################################################
     #Get Image properties
@@ -244,36 +244,36 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     aYvoxelSpacing= (vDataMax[1]-vDataMin[1])/vDataSize[1]
     aZvoxelSpacing = round((vDataMax[2]-vDataMin[2])/vDataSize[2],3)
     vSmoothingFactor=aXvoxelSpacing*2
-
+    
     #Get the Current Filament Object
     vNumberOfFilaments=vFilaments.GetNumberOfFilaments()
     vFilamentIds= vFilaments.GetIds()
-
+    
     ################################################
     ################################################
     #Create a new folder object for new Sholl Spot intersections
     # vGroupFolder_ShollSpots = vImarisApplication().GetFactory()
     vShollResult = vImarisApplication.GetFactory().CreateDataContainer()
     vShollResult.SetName('Sholl Intersections per sphere - '+ str(vFilaments.GetName()))
-
+    
     vShollDendrites = vImarisApplication.GetFactory().CreateDataContainer()
     vShollDendrites.SetName('Sholl Dendrites - '+ str(vFilaments.GetName()))
-
+    
     vShollResult2 = vImarisApplication.GetFactory().CreateDataContainer()
     vShollResult2.SetName(' Advanced Sholl Analysis - '+ str(vFilaments.GetName()))
-
+    
     ################################################
     ################################################
     vSegmentBranchLength=[]
     wSegmentIdsSpine=[]
     wSegmentIdsDendrite=[]
     wSegmentIdsALL=[]
-
+    
     vSpotPositionAllShollSpheresALL= []
     vSpotPositionAllShollSpheresPerFilamentALL = []
     vNumberofShollIntersectionsALL = []
     vNewStatSpotShollDistanceALL = []
-
+    
     vSpotPositionAllShollSpheres=[]
     vFilamentCountActual=0
     vSpotPositionAllShollSpheresPerFilament=[]
@@ -299,7 +299,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vFilamentsIndexT = vFilaments.GetTimeIndex(aFilamentIndex)
         vFilamentsXYZ = vFilaments.GetPositionsXYZ(aFilamentIndex)
         vFilamentsRadius = vFilaments.GetRadii(aFilamentIndex)
-
+    
     #Test if the time point has empty filament matrix or filament start
     #point and nothing more
         if len(vFilamentsRadius)==1:
@@ -321,13 +321,13 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             vBeginningVertexPositionXYZ=vFilamentsXYZ[vBeginningVertex]
         SegmentCountALL=0
         vBranchIndex=0
-
+    
         #create new FilamentXYZ for dendrite spilting
         zNewFilamentsXYZ = vFilamentsXYZ[:]
         zNewFilamentsRadius = vFilamentsRadius[:]
         zNewFilamentsEdges = np.array(vFilamentsEdges[:])
         zNewFilamentsTypes = vTypes[:]
-
+    
     ###############################################################################
     ###############################################################################
     #Find Starting point and terminal point indices
@@ -343,7 +343,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                 if arr[i] not in mp:
                     mp[arr[i]]=0
                 mp[arr[i]]+=1
-
+    
             # Traverse through map only and
             for x in mp:
                 if (mp[x]== 1):
@@ -352,7 +352,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         #Flatten Filament edges
         # arr = vFilamentsEdges1DAll=reduce(operator.concat, vFilamentsEdges)
         arr = reduce(operator.concat, vFilamentsEdges)
-
+    
         n = len(arr)
     #run function firstNonRepeating to find Terminal Indices
         firstNonRepeating(arr, n)
@@ -361,7 +361,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         #                                if wFilamentTerminalPointIndex[i] == vBeginningVertex]
         # del wFilamentTerminalPointIndex[[i for i in range(len(wFilamentTerminalPointIndex))
         #                                if wFilamentTerminalPointIndex[i] == vBeginningVertex][0]]
-
+    
     # Find Branch point Indices
         wFilamentBranchPointIndex=[x for x, y in collections.Counter(arr).items() if y > 2]
     #Extract the Filament Point Position from the determined indices
@@ -400,18 +400,18 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             else:
                 vSegmentEdgesWorking=[x[1] for x in enumerate(vFilamentsEdges)
                               if x[0] in vSegmentWorkingPointIndex]
-
+    
             #Find unique edge indices using "set" and convert back to list
             vEdgesUniqueWorking=list(set(x for l in vSegmentEdgesWorking for x in l))
-
+    
        #Find current Working Dendrite segment parts
             vSegmentPositionsWorking=list(itemgetter(*vEdgesUniqueWorking)(vFilamentsXYZ))
             vSegmentRadiusWorking=list(itemgetter(*vEdgesUniqueWorking)(vFilamentsRadius))
             vSegmentTypesWorking=list(itemgetter(*vEdgesUniqueWorking)(vTypes))
-
+    
             #Unit length number of points that make it up
             vSegmentBranchLength.append(len(vEdgesUniqueWorking))
-
+    
             #Collate all SegmentId by Type (dendrtie or spine)
             if max(vSegmentTypesWorking)==0:
                 wSegmentIdsDendrite.append(vSegmentIdWorking)
@@ -449,21 +449,21 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             zDup=[zNum[i] for i in range(len(zNum)) if not i == zNum.index(zNum[i])]
             #find individuals - start and end index
             zIndiv=list(set(zNum).difference(zDup))
-
+    
             if len(zIndiv)<2:
                 vAllSegmentsPerFilamentRadiusWorkingInserts.append([vSegmentRadiusWorking])
                 vAllSegmentsPerFilamentPositionsWorkingInserts.append([vSegmentPositionsWorking])
                 vAllSegmentsTypesPerFilamentWorkingInserts.extend([max(vSegmentTypesWorking)]*len(vSegmentRadiusWorking))
                 vAllSegmentIdsPerFilamentInserts.extend([vSegmentIdWorking]*len(vSegmentRadiusWorking))
-
+    
             else:
-
+    
                 zStartIndex=zIndiv[0]
                 zEndIndex=zIndiv[1]
                 zReOrderedFilamentPointIndexWorking.append(zStartIndex)
                 zReOrderedFilamentPositionsWorking.append(vFilamentsXYZ[zStartIndex])
                 zReOrderedFilamentRadiusWorking.append(vFilamentsRadius[zStartIndex])
-
+    
             #start of loop for each dendrite segment
                 for k in range (len(vSegmentRadiusWorking)-1):
                     if k==0:
@@ -472,7 +472,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                         zEdgesNext=list(reduce(operator.concat, [(index_,sub_list.index(zStartIndex))\
                              for index_, sub_list in enumerate(vSegmentEdgesWorking)\
                              if zStartIndex in sub_list]))
-
+    
                         #find next segment index delete previous one
                         if zEdgesNext[1]==1:
                             zNextSegmentIndex=vSegmentEdgesWorking[zEdgesNext[0]][0]#next index in sequence
@@ -484,27 +484,27 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                         zReOrderedFilamentPointIndexWorking.append(zNextSegmentIndex)
                         zReOrderedFilamentPositionsWorking.append(vFilamentsXYZ[zNextSegmentIndex])
                         zReOrderedFilamentRadiusWorking.append(vFilamentsRadius[zNextSegmentIndex])
-
+    
                     else:
                        #find nested list index that contains NextIndex
                        #convert tuple to list
                         zEdgesNext=list(reduce(operator.concat, [(index_,sub_list.index(zNextSegmentIndex))\
                              for index_, sub_list in enumerate(vSegmentEdgesWorking)\
                              if zNextSegmentIndex in sub_list]))
-
+    
                         if zEdgesNext[1]==1:
                             zNextSegmentIndex=vSegmentEdgesWorking[zEdgesNext[0]][0]#next index in sequence
                             vSegmentEdgesWorking.pop(zEdgesNext[0])#remove list of list
                         else:
                             zNextSegmentIndex=vSegmentEdgesWorking[zEdgesNext[0]][1]#next index in sequence
                             vSegmentEdgesWorking.pop(zEdgesNext[0])#remove list of list
-
+    
                         zReOrderedFilamentPointIndexWorking.append(zNextSegmentIndex)
                         zReOrderedFilamentPositionsWorking.append(vFilamentsXYZ[zNextSegmentIndex])
                         zReOrderedFilamentRadiusWorking.append(vFilamentsRadius[zNextSegmentIndex])
                 # zReorderedvSegmentIds.extend([vSegmentIdWorking]*len(vSegmentRadiusWorking))
                 # zReorderedvSegmentType.extend([max(vSegmentTypesWorking)]*len(vSegmentRadiusWorking))
-
+    
         ##############################################################################
         ##############################################################################
         #fill spots in filament point gaps
@@ -543,17 +543,17 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         #Progress bar for dendrite segments
             progress_bar1['value'] = int((vBranchIndex+1)/vNumberOfDendriteBranches*100) #  % out of 100
             qProgressBar.update()
-
+    
     ##############################################################################
     ##############################################################################
-
+    
     #Create a normalize color basd on the number of potential Sholl spheres
             wApproxNumSpheres=(max(wDistanceValuesMax)/vShollRadius).astype(int)
             wColorList=np.linspace(start=.1,stop=.9,num=wApproxNumSpheres)
-
+    
             zShollLabelsFinal=list(range(vShollRadius, vShollRadius*(wApproxNumSpheres+1), vShollRadius))
-
-
+    
+    
     ##############################################################################
         vShollSpotCount=0
         vShollNodeCount=0
@@ -568,7 +568,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vBranchIndex=0
         zShollLabelsAll=[]
         vShollFinalIndex=0
-
+    
     #Progress through each Sholl Sphere
         for aShollIndex in range (round(max(wDistanceValuesMax))):
             vSpotPositionCurrentShollSphere=[]#Clears current Sholl spots
@@ -579,11 +579,11 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             qSpotinQuestion=[]
             qNodeinQuestion=[]
             qShollSpotNodeClassify=[]
-
+    
     #Create list of Sholl labels
             zShollLabelsAll.append(str(aIntensityLowerThresholdManual))
-
-
+    
+    
         # Process a each branch and find point distance to starting point
         # filter by current sholl sphere distance
         # Test if Dendrite fails on the Sholl sphere
@@ -593,7 +593,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             vSegmentsCurrentShollSphereIndexMin=[index for index,value in enumerate(wDistanceValuesMin)
                                               if value <= aIntensityLowerThresholdManual]
             wSegmentIndexIntersectSholl=list(set(vSegmentsCurrentShollSphereIndexMax).intersection(vSegmentsCurrentShollSphereIndexMin))
-
+    
             if wSegmentIndexIntersectSholl==[]:
                 break
     ##############################################################################
@@ -607,7 +607,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                 #Test filament points to find those near current sholl sphere
                 wShollIntersectionIndex=np.where(np.logical_and(vDistanceListValues>float(aIntensityLowerThresholdManual), vDistanceListValues<aIntensityUpperThresholdManual))
                 wShollIntersectionIndex = wShollIntersectionIndex[1].tolist()
-
+    
             #if no filament point is detected, within these defined limits
                 #find the closest point and use that as the lone Sholl intersection
                 if len(wShollIntersectionIndex)==0:#if list array is empty
@@ -628,7 +628,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                         for i in range(len(PeakIndexWorking)-1):
                             if PeakIndexWorking[i]+1==PeakIndexWorking[i+1]-1:
                                 vDendriteXSphere[PeakIndexWorking[i]+1]=1
-
+    
                     #reset binary segment to original removing doube pad
                     vDendriteXSphere = vDendriteXSphere[:-1]
                     vDendriteXSphere = vDendriteXSphere[:-1]
@@ -639,7 +639,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     #4---single point at the end
     #5---multiple points at the end
     #0---no issues
-
+    
     #########################
         #Scenario#1----Test if first point is a sholl intersection -add to peak index list
                     if vDendriteXSphere[0]==1:
@@ -647,7 +647,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     ##################################################
                     #compile each segments peaks
                     vDendriteALLXSphere.append(vDendriteXSphere)
-
+    
                 #Analysis of each Peak index and surrounding peaks
                     for i in range(len(PeakIndexWorking)):
                         count=0
@@ -666,7 +666,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                             qNodeinQuestion.append(vDendritePositionsNEW[PeakIndexWorking[i]])
                             vShollNodeCount=vShollNodeCount+1
                             vShollSpotCount=vShollSpotCount+1
-
+    
                     #Is peak at tail end of semgent (2 in length)- branch or terminal
                         elif PeakIndexWorking[i]!=0 and vDendriteXSphere[-1]==1:
                             vSpotPositionCurrentShollSphere.append(vDendritePositionsNEW[-1])# grab last point in segment
@@ -687,10 +687,10 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                         else:
                             vSpotPositionCurrentShollSphere.append(vDendritePositionsNEW[PeakIndexWorking[i]])
                             vShollSpotCount=vShollSpotCount+1
-
+    
     ###############################################################################
     ###############################################################################
-
+    
     ###############################################
     ###############################################
     #Correct the edge related intersections - after last branch index
@@ -713,7 +713,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                     if qUniqueCounts[qIndex]==4:
                         vSpotPositionCurrentShollSphere.append(qUniqueNodes[qIndex].tolist())
                         vShollSpotCount=vShollSpotCount-3
-
+    
     ###############################################################################
             #Compile all Sholl Intersections per Sholl sphere (uneditted)
             vSpotPositionAllShollSpheresALL.extend([vSpotPositionCurrentShollSphere])
@@ -721,7 +721,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             #Number of sholl intersections per filament
             vNumberofShollIntersectionsALL.append(len(vSpotPositionCurrentShollSphere))
             vNewStatSpotShollDistanceALL.extend([aIntensityLowerThresholdManual]*len(vSpotPositionAllShollSpheresPerFilamentALL[aShollIndex]))
-
+    
             if aIntensityLowerThresholdManual in zShollLabelsFinal:
                 #Compile all Sholl Intersections per Sholl sphere (uneditted)
                 vSpotPositionAllShollSpheres.extend([vSpotPositionCurrentShollSphere])
@@ -729,12 +729,12 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                 #Number of sholl intersections per filament
                 vNumberofShollIntersections.append(len(vSpotPositionCurrentShollSphere))
                 vNewStatSpotShollDistance.extend([aIntensityLowerThresholdManual]*len(vSpotPositionAllShollSpheresPerFilament[vShollFinalIndex]))
-
+    
     ###############################################################################
         #Create Sholl Spots for the current Sholl Sphere for current Filament
                 vShollCurrentSpotRadius=[1]*len(vSpotPositionAllShollSpheresPerFilament[vShollFinalIndex])
                 vShollCurrentSpotTime=[vFilamentsIndexT]*len(vSpotPositionAllShollSpheresPerFilament[vShollFinalIndex])
-
+    
                 if len(vShollCurrentSpotRadius) > 0 and qSplitShollspheres == 1:
                     #Create the a new Spots generated from teh center of Mass
                     vNewSpots = vImarisApplication.GetFactory().CreateSpots()
@@ -749,12 +749,12 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                     #Add new spots to Surpass Scene
                     vShollResult.AddChild(vNewSpots, -1)
                     vImarisApplication.GetSurpassScene().AddChild(vShollResult, -1)
-
+    
             #Number of sholl intersections per sholl sphere
                 vNumberofIntersectionsPerShollSphere.append(len(vSpotPositionCurrentShollSphere))
                 vNewStatSpotNumberShollIntersections.extend([vNumberofIntersectionsPerShollSphere[vShollFinalIndex]]*vNumberofIntersectionsPerShollSphere[vShollFinalIndex])
-
-
+    
+    
         #Reset stat for next Sholl Sphere
                 vSpotPositionCurrentShollSphere=[]
                 vShollSpotTime=[]
@@ -762,54 +762,54 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                 vShollSpotCount=0
                 vDendriteALLXSphere=[]
                 vShollFinalIndex=vShollFinalIndex+1
-
+    
         #after the last sholl sphere
         vNewStatNumberShollIntersectionPerFilament.append(sum(vNumberofShollIntersections))
         vNumberOfShollIntersectionPerSpherePerFilament.extend(vNumberofIntersectionsPerShollSphere)
         vNumberofShollIntersections=[]
         vNumberofIntersectionsPerShollSphere=[]
-
+    
         vNewFilamentStatCriticalRadiusHighRes=(np.argmax(np.array(vNumberofShollIntersectionsALL))+1).tolist()
         vNewFilamentStatMaxIntersectionsHighRes=(np.max(np.array(vNumberofShollIntersectionsALL))).tolist()
-
+    
     ###############################################################################
         #Calculate slope???Linear regression
         #From Critical radius to outer ring
         # x = vNumberofShollIntersectionsALL[vNewFilamentStatMaxIntersectionsHighRes:len(vNumberofShollIntersectionsALL)+1]
         # y = list(range(vNewFilamentStatMaxIntersectionsHighRes, len(vNumberofShollIntersectionsALL)))
-
+    
         # zLinearRegressionSlope, zLinearRegressionIntercept, zLinearRegression_r, zLinearRegression_p, zLinearRegression_std_err = stats.linregress(x, y)
-
+    
         # def myfunc(x):
         #   return slope * x + intercept
-
+    
         # mymodel = list(map(myfunc, x))
-
+    
         # plt.scatter(x, y)
         # plt.plot(x, mymodel)
         # plt.show()
-
+    
     ###############################################################################
         #Logaithmic Regression
         # import math
         # from math import log
-
+    
         # x = vNumberofShollIntersectionsALL[vNewFilamentStatMaxIntersectionsHighRes:len(vNumberofShollIntersectionsALL)+1]
         # y = list(range(vNewFilamentStatMaxIntersectionsHighRes, len(vNumberofShollIntersectionsALL)))
-
+    
         # x=[log(i) for i in x]
         # xNEW=[x[i]/(y[i]*y[i]*math.pi) for i in range(len(x))]
-
+    
         #fit the model
         # plt.scatter(x, y)
         # plt.show()
         # fit = np.polyfit(np.array(xNEW), np.array(y), 1)
-
+    
         # #view the output of the model
         # print(fit)
-
-
-
+    
+    
+    
     ###############################################################################
     ###############################################################################
     #Spilt Dendrite segments at the point of Sholl intersection
@@ -818,7 +818,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         # vFinalShollSpheres=[vSpotPositionAllShollSpheresPerFilament[i] for i in [i-1 for i in zShollLabelsFinal]]
         #flatten all Sholl intersection to single list
         vSpotPositionAllShollSpheresFlat = [x for xs in vSpotPositionAllShollSpheresPerFilament for x in xs]
-
+    
     #Find spot on each filament and delete the spot to split dendrite at the sholl intersection
         for qIndexShollPosition in range(len(vSpotPositionAllShollSpheresFlat)):
             zShollxyzCurrent=vSpotPositionAllShollSpheresFlat[qIndexShollPosition]
@@ -829,18 +829,18 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             #Find/delete Edges Index from original FilamentEdges
             # zNewFilamentsEdges=(np.delete(zNewFilamentsEdges,zClosest_index,0)).tolist()
             zNewFilamentsEdges=(np.delete(zNewFilamentsEdges, np.where(zNewFilamentsEdges==zClosest_index)[0][0],0)).tolist()
-
-
+    
+    
     #Create a NEW Filament object with dendrite segments split
         vNewFilaments=vImarisApplication.GetFactory().CreateFilaments()
         vNewFilaments.AddFilament(zNewFilamentsXYZ, zNewFilamentsRadius, zNewFilamentsTypes, zNewFilamentsEdges, vFilamentsIndexT)
         vNewFilaments.SetName('Sholl Dendrites (ID: ' + str(vFilamentIds[vFilamentCountActual-1])+')')
-
+    
         vNewFilaments.SetName('FilamentID:'+ str(vFilamentIds[vFilamentCountActual-1])+' -- Sholl Dendrites')
-
+    
         vShollDendrites.AddChild(vNewFilaments, -1)
         vImarisApplication.GetSurpassScene().AddChild(vShollDendrites, -1)
-
+    
     #Get Dendrite position stats
         if aVersionValue < 10:
         # zStatisticNames = vNewFilaments.GetStatisticsNames()
@@ -855,17 +855,17 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Segment Position Z').mValues
             zStatisticDendriteLength= vNewFilaments.GetStatisticsByName('Segment Length').mValues
             zStatisticDendriteIds = vNewFilaments.GetStatisticsByName('Segment Position X').mIds
-
-
-
-
-
+    
+    
+    
+    
+    
     #Measure distance from each Dendrite position to starting point
          #Collate XYZ positions in to a single list
         zNewDendritesPosXYZ=[list(t) for t in zip(zStatisticDendritePosX, zStatisticDendritePosY, zStatisticDendritePosZ)]
         zDistanceDendriteListValues=cdist([vBeginningVertexPositionXYZ], zNewDendritesPosXYZ)
         zDistanceDendriteListValues=zDistanceDendriteListValues.transpose()
-
+    
     #CreateLabels for each Sholl sphere
         # scount=0
         # zShollLabelsAll = [20]
@@ -873,10 +873,10 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vNewFilamentsStatId=[]
         vNewFilamentsStatLength=[]
         vNewFilamentsStatShollSphere=[]
-
+    
         zShollLabelsInt=list(range(vShollRadius, vShollRadius*(wApproxNumSpheres+2), vShollRadius))
-
-
+    
+    
         # zShollLabelsInt = [int(i) for i in zShollLabelsFinal]
         zShollLabelsInt.insert(0,0)#insert a zero at start of list
         vLabelIndices=[]
@@ -886,7 +886,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     ###Creating new statistics for segmented dendrite length
             vNewFilamentsStatLength.append(sum([zStatisticDendriteLength[i]
                                                 for i in np.where(zDistanceDendriteListValues==zShollLabelsInt[i+1])[0].tolist()]))
-
+    
     ###############################################################################
         #Add Sholl Statistics
         vNewFilamentsStatvIds=list(range(len(zStatisticDendriteIds)))
@@ -909,20 +909,20 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vNewFilaments.AddStatistics(vNewFilamentsStatNames, vNewFilamentsStatShollSphere,
                               vNewFilamentsStatUnits, vNewFilamentsStatFactors,
                               vNewFilamentsStatFactorName, zStatisticDendriteIds)
-
+    
     ###############################################################################
     ###############################################################################
-
+    
     ###############################################################################
     #Create Sholl Spots object for each filament with new stats
         vNewShollSpotsPerFilament = vImarisApplication.GetFactory().CreateSpots()
-
-
+    
+    
         # vFinalShollSpheres=[vSpotPositionAllShollSpheresPerFilament[i] for i in [i-1 for i in zShollLabelsFinal]]
         #may need to flatten spot list of lists
         vSpotPositionAllShollSpheresPerFilament = [num for elem in vSpotPositionAllShollSpheresPerFilament for num in elem]
-
-
+    
+    
         vNewShollSpotsPerFilament.Set(vSpotPositionAllShollSpheresPerFilament,
                               [vFilamentsIndexT]*len(vSpotPositionAllShollSpheresPerFilament),
                               [1]*len(vSpotPositionAllShollSpheresPerFilament))
@@ -933,10 +933,10 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vNewShollSpotsPerFilament.SetColorRGBA(zRandomColor)#Set Random color
         vShollResult2.AddChild(vNewShollSpotsPerFilament, -1)
         vImarisApplication.GetSurpassScene().AddChild(vShollResult2, -1)
-
+    
         # vShollResult2.SetVisible(0)
         # vNewShollSpotsPerFilament.SetVisible(0)
-
+    
         #############################################################
         #Add new stats
         vSpotsTimeIndex=[vFilamentsIndexT+1]*len(vSpotPositionAllShollSpheresPerFilament)
@@ -955,7 +955,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         # vNewShollSpotsPerFilament.AddStatistics(vSpotsStatNames, vNewStatSpotNumberShollIntersections,
         #                               vSpotsStatUnits, vSpotsStatFactors,
         #                               vSpotsStatFactorName, vSpotsvIds)
-
+    
     ###############################################################################
     ###############################################################################
     #Add Overall statistics for sum dendrite length per sholl sphere
@@ -966,7 +966,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
         vOverallStatFactorsTime=list(range(1,vSizeT+1))
         vOverallStatFactors=[['Overall'],[str(i) for i in vOverallStatFactorsTime]]
         vOverallStatFactorNames=['FactorName','Time']
-
+    
     #loop for each sphere and create overall stat
         #main loop adds one for last sholl ring
         for i in range (len(zShollLabelsInt)-1):
@@ -974,8 +974,8 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             vOverallStatNames = [' Dendrite Length Sum - ' + '0'+ str(zShollLabelsInt[i+1]) + ' um Sholl Ring']
             if zShollLabelsInt[i+1]>=100:
                 vOverallStatNames = [' Dendrite Length Sum - ' + str(zShollLabelsInt[i+1]) + ' um Sholl Ring']
-
-
+    
+    
             vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNewFilamentsStatLength[i]],
                                       vOverallStatUnits_um, vOverallStatFactors,
                                       vOverallStatFactorNames, vOverallStatIds)
@@ -985,7 +985,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                 # vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNumberOfShollIntersectionPerSpherePerFilament[i-1]],
                 #                           vOverallStatUnits, vOverallStatFactors,
                 #                           vOverallStatFactorNames, vOverallStatIds)
-
+    
                 #Set Sholl sphere Labels for each filament
                 vLabelIndices = (np.where(np.array(vNewStatSpotShollDistance)==zShollLabelsInt[i]))[0].tolist()
                 wLabelList=[]
@@ -993,7 +993,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                     vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Intersections", ' '+str(zShollLabelsInt[i]))
                     wLabelList.append(vLabelCreate)
                 vNewShollSpotsPerFilament.SetLabels(wLabelList)
-
+    
             # vNewFilaments.AddStatistics(vOverallStatNames, [vNewFilamentsStatLength[i]],
             #                           vOverallStatUnits, vOverallStatFactors,
             #                           vOverallStatFactorNames, vOverallStatIds)
@@ -1001,7 +1001,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     #Calculate and report the Critical Radius (radius with the highest density)
         vNewFilamentStatCriticalRadius=[vNewStatSpotShollDistance[vNewStatSpotNumberShollIntersections.index(max(vNewStatSpotNumberShollIntersections))]]
         vNewFilamentStatMaxIntersections=[max(vNewStatSpotNumberShollIntersections)]
-
+    
         vOverallStatNames = [' Critical Radius']
         vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, vNewFilamentStatCriticalRadius,
                                                 vOverallStatUnits_um, vOverallStatFactors,
@@ -1020,7 +1020,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
             vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNewFilamentStatMaxIntersectionsHighRes],
                                                     vOverallStatUnits, vOverallStatFactors,
                                                     vOverallStatFactorNames, vOverallStatIds)
-
+    
     ###############################################################################
     ###############################################################################
     #Calculate sholl intersection distance on dendrite to starting point
@@ -1028,22 +1028,30 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     # #Find Spot close to filament and measure distance along path to starting point
     # #Make spot position conect to filament as spine attachment point
         # if vOptionShollIntersectionDistanceAlongFilament==1:
-
+    
         if vSpotPositionAllShollSpheresPerFilament!=[]:
-
+    
             if vBeginningVertex !=-1:
                 wNewFilamentsEdges=list(vFilamentsEdges)
                 wNewFilamentsRadius=list(vFilamentsRadius)
                 wNewFilamentsXYZ=list(vFilamentsXYZ)
                 wNewFilamentsTypes=list(vTypes)
-
+    
                 #Create array of distance measures to original filament points
                 wSpotToAllFilamentDistanceArrayOriginal=cdist(vSpotPositionAllShollSpheresPerFilament,vFilamentsXYZ)
-                wSpotToAllFilamentDistanceArrayOriginal=wSpotToAllFilamentDistanceArrayOriginal - vFilamentsRadius
-
+                #wSpotToAllFilamentDistanceArrayOriginal=wSpotToAllFilamentDistanceArrayOriginal - vFilamentsRadius
+    
                 #For each spot, find index on filament of closest point
                 wSpotsFilamentClosestDistancePointIndex=np.argmin(wSpotToAllFilamentDistanceArrayOriginal, axis=1)
-
+    
+                #If wSpotsFilamentClosestDistancePointIndex==0 then find the second smallest value/index
+                wTestZeros=np.where(wSpotsFilamentClosestDistancePointIndex==0)
+                # for t in range (len(wTestZeros)):
+                #     t=0
+                    
+    
+    
+    
                 #test is spine attachment point is branch point, if so add one
                 for i in range (len(wSpotsFilamentClosestDistancePointIndex)):
                     if wSpotsFilamentClosestDistancePointIndex[i] in wFilamentBranchPointIndex or wSpotsFilamentClosestDistancePointIndex[i] in wFilamentTerminalPointIndex:
@@ -1055,7 +1063,7 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                             wSpotsFilamentClosestDistancePointIndex[i]=wSpotsNearestIndex[0][2]
                         if wSpotsFilamentClosestDistancePointIndex[i] in wFilamentBranchPointIndex or wSpotsFilamentClosestDistancePointIndex[i] in wFilamentTerminalPointIndex:
                             wSpotsFilamentClosestDistancePointIndex[i]=wSpotsNearestIndex[0][3]
-
+    
                 #loop for each spot within threshold
                 #append new filament and create list of new spots
                 for i in range (len(vSpotPositionAllShollSpheresPerFilament)):
@@ -1063,11 +1071,11 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                     wNewFilamentsRadius.append(1)
                     wNewFilamentsEdges.append([wSpotsFilamentClosestDistancePointIndex[i],len(vFilamentsRadius)+i])
                     wNewFilamentsTypes.append(1)
-
+    
                 vNewFilament=vImarisApplication.GetFactory().CreateFilaments()
                 vNewFilament.AddFilament(wNewFilamentsXYZ, wNewFilamentsRadius, wNewFilamentsTypes, wNewFilamentsEdges, vFilamentsIndexT)
                 vNewFilament.SetBeginningVertexIndex(0, vBeginningVertex)
-
+    
         #Grab New Filament Spine Statistics for attachment point distance.
                 vNewFilamentStatistics = vNewFilament.GetStatistics()
                 vNewFilamentStatNames = vNewFilamentStatistics.mNames
@@ -1091,11 +1099,11 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
                                                if x[0] in vNewFilamentSpineAttPtPosXIndex]
                     vNewFilamentStatIdsAttPosX=[x[1] for x in enumerate(vNewFilamentStatIds)
                                              if x[0] in vNewFilamentSpineAttPtPosXIndex]
-
+    
                 #Collate all spots for each filament
                 for i in range (len(vSpotPositionAllShollSpheresPerFilament)):
                     wCompleteShollSpotDistAlongFilamentStatWorking.append(vNewFilamentSpineAttPtDist[vNewFilamentStatIdsDist.index(vNewFilamentStatIdsAttPosX[vNewFilamentSpineAttPtPosX.index(wNewFilamentsXYZ[wSpotsFilamentClosestDistancePointIndex[i]][0])])])
-
+    
     ###########################
     #Create stats for distance along dendrite to starting point
             vSpotsStatUnits=['um']*len(vSpotPositionAllShollSpheresPerFilament)
@@ -1119,31 +1127,31 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     #AOE =  0 are equal in all directions
     #     vSpotPositionAllShollSpheresPerFilamentAdjusted=[vSpotPositionAllShollSpheresPerFilament[i] - vBeginningVertexPositionXYZ
     #                                                      for i in range(len(vSpotPositionAllShollSpheresPerFilament))]
-
+    
     #Use a reference frame to set the orientation space to measure from
     #Extract out the sholl position relative to the Ref Frame
     #zStatisticDendritePosX = vNewFilaments.GetStatisticsByName('Segment Position X Reference frame').mValues
     #zStatisticDendritePosY = vNewFilaments.GetStatisticsByName('Segment Position Y Reference frame').mValues
     #zStatisticDendritePosZ = vNewFilaments.GetStatisticsByName('Segment Position Z Reference frame').mValues
-
-
-
-
+    
+    
+    
+    
     #If refernce is set to orient the orign axis
         #Grab New Filament Spine Statistics for attachment point distance.
         # vNewShollSpotsPerFilamentStatistics = vNewSpots.GetStatistics()
         # vNewShollSpotsPerFilamentStatNames = vNewShollSpotsPerFilamentStatistics.mNames
         # vNewShollSpotsPerFilamentStatValues = vNewShollSpotsPerFilamentStatistics.mValues
         # vNewShollSpotsPerFilamentStatIds = vNewShollSpotsPerFilamentStatistics.mIds
-
-
-
+    
+    
+    
     #Maybe something different for 3D Sholl???
     ###############################################################################
-
-
-
-
+    
+    
+    
+    
     ###############################################################################
     #Reset Spots for next filament
         vNewStatSpotNumberShollIntersections=[]
@@ -1154,23 +1162,23 @@ def XT_MJG_Filament_ShollAnalysis14(aImarisId):
     ###############################################################################
         progress_bar2['value'] = int((aFilamentIndex+1)/vNumberOfFilaments*100) #  % out of 100
         qProgressBar.update()
-
-
+    
+    
     #Sholl Branching Density
     #Make series of fixed (randomly placed lines in the volume)
     #Quantify the number of Sholl Intersections with these lines
     #Report NumberIntersections/um
-
+    
     #Alternative:  create convexhull around terminal points, make sure the lines
     # fall inside of the convex hull
-
+    
     ###############################################################################
-
+    
     qProgressBar.destroy()
     qProgressBar.mainloop()
-
+    
     ##############################################################################
     #Visibility of the Scene Objects
-
+    
     # elapsed = time.time() - start
     # print(elapsed)
