@@ -163,25 +163,3 @@ def XT_MJG_LabelSelector2 (aImarisId):
     vImarisApplication.GetSurpassScene().AddChild(vNewObject, -1)
     vObject.SetVisible(0)
 
-
-
-#Create Labels for vNewObject
-# wLabelList = []
-# wLabelIndices = np.arange(0,len(vNewObjectIndices)-1)
-# for i in range(len(wLabelIndices[0])):
-#     vLabelCreate = vFactory.CreateObjectLabel(wLabelIndices[i], 'Coloc', vLabelChoice)
-#     wLabelList.append(vLabelCreate)
-# vSpots1.SetLabels(wLabelList)
-
-
-
-# np.arange(0,len(vNewObjectIndices)-1)
-# vSurpassObject.GetLabelsOfId(vIds[6])
-
-
-# vLabelValues = (str(x[x.index('mLabelValue = ')+14:-3]))
-# vLabelGroup = str(x[x.index('mGroupName = ')+13:-3]).split('\n')[0]     
-                                                           
-
-# newTest=[]
-# newTest.extend(vTest)
