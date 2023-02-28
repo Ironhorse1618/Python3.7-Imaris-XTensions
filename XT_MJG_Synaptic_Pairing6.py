@@ -6,15 +6,15 @@
     # <CustomTools>
     #     <Menu>
     #         <Submenu name="Spots Functions">
-    #             <Item name="Synaptic_Pairing_beta5" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Synaptic_Pairing5(%i)</Command>
+    #             <Item name="Synaptic_Pairing6" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Synaptic_Pairing6(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSpots">
-    #             <Item name="Synaptic Pairing_beta5" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_Synaptic_Pairing5(%i)</Command>
+    #             <Item name="Synaptic Pairing6" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_Synaptic_Pairing6(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -55,8 +55,10 @@ import numpy as np
 import scipy
 import scipy.stats
 from scipy.spatial.distance import cdist
+import ImarisLib
 
-# GUI imports
+
+# GUI imports - builtin
 import tkinter as tk
 from tkinter import ttk
 from tkinter.ttk import *
@@ -64,10 +66,11 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
 import time
-import ImarisLib
+from collections import OrderedDict
+
 
 aImarisId=0
-def XT_MJG_Synaptic_Pairing5(aImarisId):
+def XT_MJG_Synaptic_Pairing6(aImarisId):
     
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
@@ -384,6 +387,8 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         #find Spots1 partners for the TripletsIds
         wSpots2ListQuadrupletsPairedSpots1Ids=wColocSrtdAdj_vSpots1_Temp[:,0][wSortIndex[np.searchsorted(wColocSrtdAdj_vSpots1_Temp[:,1],wSpots1ListQuadrupletIds,sorter = wSortIndex)].tolist()]
     
+        qProgressBar['value'] = aNextTimePoint+1/len(vTimeIndicesActive)*60
+        master.update()
     
     ##############################################################################
     ##############################################################################
@@ -451,29 +456,64 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
             vStatTripletsSpecial_vSpots1 = np.arange(1,len(wSpots1SpecialTripletsIndices)/3+1)
             vStatTripletsSpecial_vSpots1 = np.repeat(vStatTripletsSpecial_vSpots1, 3)
     
+        qProgressBar['value'] = aNextTimePoint+1/len(vTimeIndicesActive)*75
+        master.update()
     ###############################################################################
     ##############################################################################
     #Create new statID for Singles Doublets,Triplets,Quadruplets for Spots2
     ############
         #for vSpots2 singlets
         if not wSpots1ListSingleIds.size == 0:
+            
+            # start = time.time()
             np.put(vNewSpots2_Stats[:,1],
-                   pd.unique(np.where(np.isin(vSpots2Ids, vSpots2CurrrentIds[wSpots2ListSingleIds]))[0].tolist()),
+                   (pd.DataFrame({'A': vSpots2Ids}).reset_index().set_index('A').loc[vSpots2CurrrentIds[wSpots2ListSingleIds]].reset_index().set_index('index').index.values).tolist(),
                    vStatSingles_vSpots2.tolist())
+            # elapsed = time.time() - start
+            # print('NEWpandas - '+str(elapsed))
         #Spots1 paired with Single from Spots2
             np.put(vNewSpots1_Stats[:,5],
-                   pd.unique(np.where(np.isin(vSpots1Ids, vSpots1CurrrentIds[wSpots1ListSinglePairedSpots2Ids]))[0].tolist()),
+                   (pd.DataFrame({'A': vSpots1Ids}).reset_index().set_index('A').loc[vSpots1CurrrentIds[wSpots1ListSinglePairedSpots2Ids]].reset_index().set_index('index').index.values).tolist(),
                    vStatSingles_vSpots1.tolist())
+    
+    ###############################################################################
+    ##############################################################################
+            # xAll=[4,5,46,30,55,86,57,58,10,12,44,99]
+            # xCur=np.array([30,55,12,44,57])
+            # xSing=np.array([4,2,1])
+            
+            # [x[0] for x in [np.where(xAll==i)[0].tolist() for i in xCur[xSing]]]
+            # [6,9,4]#final answer is right
+    
+            # pd.unique(np.where(np.isin(xAll, xCur[xSing]))[0].tolist())
+            # [4,6,9]#Final anserr is WRONG!!!!
+    
+            # df = pd.DataFrame({'A': xAll})
+            # df.set_index('A').loc[[57,12,55]].reset_index()
+            # #we have a winner!!!!!!
+            # xResult = df.reset_index().set_index('A').loc[xCur[xSing]].reset_index().set_index('index')
+            # (xResult.index.values).tolist()
+    
+    
+            # (pd.DataFrame({'A': xAll}).reset_index().set_index('A').loc[xCur[xSing]].reset_index().set_index('index').index.values).tolist()
+    
+    
+            # (pd.DataFrame({'A': vSpots2Ids}).reset_index().set_index('A').loc[vSpots2CurrrentIds[wSpots2ListSingleIds]].reset_index().set_index('index').index.values).tolist()
+    ###############################################################################
+    ##############################################################################
+            
     ############
     #for vSpots2 doublets
         if not wSpots2ListDoubletIds.size==0:
             np.put(vNewSpots2_Stats[:,2],
-                   np.where(np.isin(vSpots2Ids, vSpots2CurrrentIds[wSpots2ListDoubletIds]))[0].tolist(),
+                   (pd.DataFrame({'A': vSpots2Ids}).reset_index().set_index('A').loc[vSpots2CurrrentIds[wSpots2ListDoubletIds]].reset_index().set_index('index').index.values).tolist(),
                    vStatDoublets_vSpots2.tolist())
             #Spots1 paired with Doublets from Spots2
+            #use Dict to remove duplicates and keep order
             np.put(vNewSpots1_Stats[:,6],
-                   pd.unique(np.where(np.isin(vSpots1Ids, vSpots1CurrrentIds[wSpots1ListDoubletsPairedSpots2Ids]))[0].tolist()),
+                   list(OrderedDict.fromkeys((pd.DataFrame({'A': vSpots1Ids}).reset_index().set_index('A').loc[vSpots1CurrrentIds[wSpots1ListDoubletsPairedSpots2Ids]].reset_index().set_index('index').index.values).tolist())),
                    pd.unique(vStatDoublets_vSpots1.tolist()).tolist())
+    
     ############
     #for vSpots2 triplets
         if not wSpots2ListTripletIds.size==0:
@@ -513,20 +553,22 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
             vStatSingles_vSpots2 = np.arange(1,len(np.unique(wSpots2ListSingleIds).tolist())+1)
             vStatSingles_vSpots1 = np.arange(1,len(np.unique(wSpots1ListSingleIds).tolist())+1)
             np.put(vNewSpots1_Stats[:,1],
-                   pd.unique(np.where(np.isin(vSpots1Ids, vSpots1CurrrentIds[wSpots1ListSingleIds]))[0].tolist()),
+                   (pd.DataFrame({'A': vSpots1Ids}).reset_index().set_index('A').loc[vSpots1CurrrentIds[wSpots1ListSingleIds]].reset_index().set_index('index').index.values).tolist(),
                    vStatSingles_vSpots1.tolist())
             np.put(vNewSpots2_Stats[:,5],
-                   pd.unique(np.where(np.isin(vSpots2Ids, vSpots2CurrrentIds[wSpots2ListSinglePairedSpots1Ids]))[0].tolist()),
+                   (pd.DataFrame({'A': vSpots2Ids}).reset_index().set_index('A').loc[vSpots2CurrrentIds[wSpots2ListSinglePairedSpots1Ids]].reset_index().set_index('index').index.values).tolist(),
                    vStatSingles_vSpots2.tolist())
+    
     ############
     #for doublets
         if not wSpots1ListDoubletIds.size==0:
             np.put(vNewSpots1_Stats[:,2],
-                   np.where(np.isin(vSpots1Ids, vSpots1CurrrentIds[wSpots1ListDoubletIds]))[0].tolist(),
+                   (pd.DataFrame({'A': vSpots1Ids}).reset_index().set_index('A').loc[vSpots1CurrrentIds[wSpots1ListDoubletIds]].reset_index().set_index('index').index.values).tolist(),
                    vStatDoublets_vSpots1.tolist())
             np.put(vNewSpots2_Stats[:,6],
-                   pd.unique(np.where(np.isin(vSpots2Ids, vSpots2CurrrentIds[wSpots2ListDoubletPairedSpots1Ids]))[0].tolist()),
+                   list(OrderedDict.fromkeys((pd.DataFrame({'A': vSpots2Ids}).reset_index().set_index('A').loc[vSpots2CurrrentIds[wSpots2ListDoubletPairedSpots1Ids]].reset_index().set_index('index').index.values).tolist())),
                    pd.unique(vStatDoublets_vSpots2.tolist()).tolist())
+            
     ############
     #for triplets
         if not wSpots1ListTripletIds.size==0:
@@ -615,7 +657,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,1].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
-        vSpotsStatNames = [' 1_SinglesID - Paired w/' + str(vSpots2.GetName())]*vSpots1Length
+        vSpotsStatNames = [' Paired_1_SinglesID - w/' + str(vSpots2.GetName())]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,5].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
@@ -624,7 +666,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,2].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
-        vSpotsStatNames = [' 2_DoubletsID - Paired w/' + str(vSpots2.GetName())]*vSpots1Length
+        vSpotsStatNames = [' Paired_2_DoubletsID - w/' + str(vSpots2.GetName())]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,6].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
@@ -633,7 +675,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,3].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
-        vSpotsStatNames = [' 3_TripletsID - Paired w/' + str(vSpots2.GetName())]*vSpots1Length
+        vSpotsStatNames = [' Paired_3_TripletsID - w/' + str(vSpots2.GetName())]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,7].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
@@ -642,7 +684,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,4].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
-        vSpotsStatNames = [' 4_QuadrupletsID - Paired w/' + str(vSpots2.GetName())]*vSpots1Length
+        vSpotsStatNames = [' Paired_4_QuadrupletsID - w/' + str(vSpots2.GetName())]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,8].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
@@ -654,20 +696,20 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
     ##############################################################################
     #Create new statistic for Spots1
     if np.any(wLengthColocSingles_vSpots1):
-        vSpotsStatNames = [' 1_SinglesID']*vSpots1Length
+        vSpotsStatNames = [' 1_SinglesID w/' + str(vSpots2.GetName())]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,1].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
-        vSpotsStatNames = [' 1_SinglesID - Paired w/' + str(vSpots1.GetName())]*vSpots2Length
+        vSpotsStatNames = [' Paired_1_SinglesID - w/' + str(vSpots1.GetName())]*vSpots2Length
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,5].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
     if np.any(wLengthColocDoublets_vSpots1):
-        vSpotsStatNames = [' 2_DoubletsID']*vSpots1Length
+        vSpotsStatNames = [' 2_DoubletsID w/' + str(vSpots2.GetName()) ]*vSpots1Length
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,2].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
-        vSpotsStatNames = [' 2_DoubletsID - Paired w/' + str(vSpots1.GetName())]*vSpots2Length
+        vSpotsStatNames = [' Paired_2_DoubletsID - w/' + str(vSpots1.GetName())]*vSpots2Length
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,6].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
@@ -676,7 +718,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,3].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
-        vSpotsStatNames = [' 3_TripletsID - Paired w/' + str(vSpots1.GetName())]*vSpots2Length
+        vSpotsStatNames = [' Paired_3_TripletsID - w/' + str(vSpots1.GetName())]*vSpots2Length
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,7].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
@@ -685,7 +727,7 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
         vSpots1.AddStatistics(vSpotsStatNames, vNewSpots1_Stats[:,4].tolist(),
                                       vSpotsStatUnits_vSpots1, vSpotsStatFactors_vSpots1,
                                       vSpotsStatFactorName, vSpots1Ids)
-        vSpotsStatNames = [' 4_QuadrupletsID - Paired w/' + str(vSpots1.GetName())]*vSpots2Length
+        vSpotsStatNames = [' Paired_4_QuadrupletsID - w/' + str(vSpots1.GetName())]*vSpots2Length
         vSpots2.AddStatistics(vSpotsStatNames, vNewSpots2_Stats[:,8].tolist(),
                                       vSpotsStatUnits_vSpots2, vSpotsStatFactors_vSpots2,
                                       vSpotsStatFactorName, vSpots2Ids)
@@ -804,5 +846,5 @@ def XT_MJG_Synaptic_Pairing5(aImarisId):
     master.destroy()
     master.mainloop()
     
-
-
+    
+    
