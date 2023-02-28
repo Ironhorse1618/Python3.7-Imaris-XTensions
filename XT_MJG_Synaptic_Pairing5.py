@@ -13,7 +13,7 @@
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSpots">
-    #             <Item name="Synaptic Pairing"_beta5 icon="Python3">
+    #             <Item name="Synaptic Pairing_beta5" icon="Python3">
     #                 <Command>Python3XT::XT_MJG_Synaptic_Pairing5(%i)</Command>
     #             </Item>
     #         </SurpassComponent>

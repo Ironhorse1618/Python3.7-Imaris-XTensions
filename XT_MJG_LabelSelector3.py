@@ -5,29 +5,29 @@
     # <CustomTools>
     #     <Menu>
     #         <Submenu name="Spots Functions">
-    #             <Item name="Label Selector2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_LabelSelector2(%i)</Command>
+    #             <Item name="Label Selector3" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_LabelSelector3(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSpots">
-    #             <Item name="Label Selector2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_LabelSelector2(%i)</Command>
+    #             <Item name="Label Selector3" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_LabelSelector3(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
     #     <Menu>
     #         <Submenu name="Surfaces Functions">
-    #             <Item name="Label Selector2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_LabelSelector2(%i)</Command>
+    #             <Item name="Label Selector3" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_LabelSelector3(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSurfaces">
-    #             <Item name="Label Selector2" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_LabelSelector2(%i)</Command>
+    #             <Item name="Label Selector3" icon="Python3">
+    #                 <Command>Python3XT::XT_MJG_LabelSelector3(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -51,7 +51,7 @@ import time
 import ImarisLib
 
 aImarisId=0
-def XT_MJG_LabelSelector2 (aImarisId):
+def XT_MJG_LabelSelector3 (aImarisId)
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -78,19 +78,38 @@ def XT_MJG_LabelSelector2 (aImarisId):
     else:
         vObject = vFactory.ToSurfaces(vImarisApplication.GetSurpassSelection())
         vIds = vObject.GetIds()
-        
-    for i in range (len(vIds)):
-        x = str(vObject.GetLabelsOfId(vIds[i]))
-        if x == '[]':
-            continue
-        else:
-            vLabelValues.append(str(x[x.index('mLabelValue = ')+14:-3]))
-            vLabelGroups.append(str(x[x.index('mGroupName = ')+13:-3]).split('\n')[0])     
+    
+    # x = str(vObject.GetLabelsOfId(vIds[0]))
+    
+    # for i in range (len(vIds)):
+    #     x = str(vObject.GetLabelsOfId(vIds[i]))
+    #     if x == '[]':
+    #         continue
+    #     else:
+    #         # vLabelValues.append(str(x[x.index('mLabelValue = ')+14:-3]))
+    #         # vLabelGroups.append(str(x[x.index('mGroupName = ')+13:-3]).split('\n')[0])     
+    #         vLabelValues.append(str(x[x.index('mLabelValue = ')+14:x.index('mLabelValue = ')+14+str(x[x.index('mLabelValue = ')+14:-1]).find('\n')]))
+    start = time.time()
+    test=vObject.GetLabels()
+    
+    for i in range (len(test)):
+        xNEW = str(str(test[i])[str(test[i]).index('mLabelValue = ')+14:str(test[i]).index('mLabelValue = ')+14+str(str(test[i])[str(test[i]).index('mLabelValue = ')+14:-1]).find('\n')])
+        if xNEW not in vLabelValues:
+            vLabelValues.append(xNEW)
+    elapsed = time.time() - start
+    print(elapsed)
+            
+            
     vLabelsUnique = []
     
     for item in vLabelValues:
         if item not in vLabelsUnique:
             vLabelsUnique.append(item)
+    
+    # str(x[x.index('mLabelValue = ')+14:x.index('mLabelValue = ')+14+str(x[x.index('mLabelValue = ')+14:-1]).find('\n')])
+    
+    
+    
     
     
     #####################################################
@@ -113,7 +132,7 @@ def XT_MJG_LabelSelector2 (aImarisId):
     ##################################################################
     names = StringVar()
     names.set(vLabelsUnique)
-    lstbox = Listbox(main, listvariable=names, selectmode=SINGLE, width=15, height=10)
+    lstbox = Listbox(main, listvariable=names, selectmode=SINGLE, width=25, height=10)
     lstbox.grid(column=  0, row=1)
     
     def select():
@@ -138,6 +157,7 @@ def XT_MJG_LabelSelector2 (aImarisId):
     vLabelChoice=vLabelsUnique[vLabelSelection[0]]
     #vObject indices in the Selected Group/Class
     vNewObjectIndices = [i for i, s in enumerate(vLabelValues) if vLabelChoice in s]
+    vObject.GetColorRGBA()
     
     if qIsSpot:
     #Original Spot data
@@ -152,7 +172,6 @@ def XT_MJG_LabelSelector2 (aImarisId):
         ###Create New Spots object
         vNewObject = vImarisApplication.GetFactory().CreateSpots()
         vNewObject.SetName(vObject.GetName() + '--' + vLabelChoice + ' -- Copied')
-        vNewObject.SetColorRGBA(18000)
         vNewObject.Set(vNewObjectPositionsXYZ, vNewObjectTimeIndices, vNewObjectRadius)
         vImarisApplication.GetSurpassScene().AddChild(vNewObject, -1)
     else:
@@ -162,4 +181,5 @@ def XT_MJG_LabelSelector2 (aImarisId):
         
     vImarisApplication.GetSurpassScene().AddChild(vNewObject, -1)
     vObject.SetVisible(0)
-
+    
+    
