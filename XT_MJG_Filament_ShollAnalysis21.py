@@ -180,7 +180,7 @@ def XT_MJG_Filament_ShollAnalysis21(aImarisId):
     var3 = tk.IntVar(value=0)
     var4 = tk.IntVar(value=0)
     var5 = tk.IntVar(value=0)
-    var6 = tk.IntVar(value=1)
+    var6 = tk.IntVar(value=0)
     var7 = tk.IntVar(value=0)
 
 
@@ -1501,29 +1501,29 @@ def XT_MJG_Filament_ShollAnalysis21(aImarisId):
 
             #Loop just the sholl sphere values
             # if i > 0 and i < len(zShollLabelsInt)-1:
-            if i < len(zShollLabelsInt)-1:
-
-                # vOverallStatNames = [' Number Intersections - ' + str(zShollLabelsInt[i]) + ' um Sholl Sphere']
-                # vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNumberOfShollIntersectionPerSpherePerFilament[i-1]],
-                #                           vOverallStatUnits, vOverallStatFactors,
-                #                           vOverallStatFactorNames, vOverallStatIds)
-
-                #Set Sholl sphere Labels for each filament
-                vLabelIndices = (np.where(np.array(vNewStatSpotShollDistance)==zShollLabelsInt[i]))[0].tolist()
-                wLabelList=[]
-                if zShollLabelsInt[i] < 10:
-                    zLabelName = ('00' + str(zShollLabelsInt[i]))
-                elif zShollLabelsInt[i] < 100 and zShollLabelsInt[i] >= 10:
-                    zLabelName = ('0' + str(zShollLabelsInt[i]))
-                else:
-                    zLabelName = str(zShollLabelsInt[i])
-
-
-                for j in range (len(vLabelIndices)):
-                    vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Intersections", ' ' + zLabelName)
-                    wLabelList.append(vLabelCreate)
-                vNewShollSpotsPerFilament.SetLabels(wLabelList)
-
+                if i < len(zShollLabelsInt)-1:
+    
+                    # vOverallStatNames = [' Number Intersections - ' + str(zShollLabelsInt[i]) + ' um Sholl Sphere']
+                    # vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, [vNumberOfShollIntersectionPerSpherePerFilament[i-1]],
+                    #                           vOverallStatUnits, vOverallStatFactors,
+                    #                           vOverallStatFactorNames, vOverallStatIds)
+    
+                    #Set Sholl sphere Labels for each filament
+                    vLabelIndices = (np.where(np.array(vNewStatSpotShollDistance)==zShollLabelsInt[i]))[0].tolist()
+                    wLabelList=[]
+                    if zShollLabelsInt[i] < 10:
+                        zLabelName = ('00' + str(zShollLabelsInt[i]))
+                    elif zShollLabelsInt[i] < 100 and zShollLabelsInt[i] >= 10:
+                        zLabelName = ('0' + str(zShollLabelsInt[i]))
+                    else:
+                        zLabelName = str(zShollLabelsInt[i])
+    
+    
+                    for j in range (len(vLabelIndices)):
+                        vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Intersections", ' ' + zLabelName)
+                        wLabelList.append(vLabelCreate)
+                    vNewShollSpotsPerFilament.SetLabels(wLabelList)
+    
 
     ###############################################################################
     ###############################################################################
@@ -1810,16 +1810,19 @@ def XT_MJG_Filament_ShollAnalysis21(aImarisId):
                 zAllFilamentsRegularityIndexTP.append(0)
                 zCurrentFilamentsRegularityIndexTP.append(0)
 
-            if len(wFilamentBranchPointsNEWCurrent) > 3 and qOptionBranchPoints == 1:
+            if len(wFilamentBranchPointsNEWCurrent) > 3 and qOptionRegularityIndex == 1:
                 vOverallStatNames = [' Regularity Index - BranchPoints']
                 vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, zCurrentFilamentsRegularityIndexBP,
                                                         vOverallStatUnits, vOverallStatFactors,
                                                         vOverallStatFactorNames, vOverallStatIds)
-            if len(wFilamentTerminalPointsNEWCurrent) > 3 and qOptionTerminalPoints == 1:
+            if len(wFilamentTerminalPointsNEWCurrent) > 3 and qOptionRegularityIndex == 1:
                 vOverallStatNames = [' Regularity Index - TerminalPoints']
                 vNewShollSpotsPerFilament.AddStatistics(vOverallStatNames, zCurrentFilamentsRegularityIndexTP,
                                                         vOverallStatUnits, vOverallStatFactors,
                                                         vOverallStatFactorNames, vOverallStatIds)
+
+
+
 
         #populated the Toruosity stat
         vNewStatTortuosityPerFilament.append(np.mean(np.array(vNewStatTortuosityPerSegment)[np.where(np.array(vNewStatTortuosityPerSegment)>0)]))
