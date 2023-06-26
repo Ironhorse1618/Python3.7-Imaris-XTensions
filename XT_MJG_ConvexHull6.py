@@ -13,19 +13,18 @@
                 #<Item name="ConvexHull - Python" icon="Python3">
                     #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
                 #</Item>
-            #</Submenu>       #</Menu>
+            #</Submenu>       
+        #</Menu>
        #<SurpassTab>
-           #<SurpassComponent name="bpFilaments">
-               #<Item name="ConvexHull - Python" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
-               #</SurpassComponent>
-           #</SurpassTab>
-        #<SurpassTab>
             #<SurpassComponent name="bpSurfaces">
                 #<Item name="ConvexHull - Python" icon="Python3">
                     #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
-                #</SurpassComponent>
-            #</SurpassTab>
+            #</SurpassComponent>
+            #<SurpassComponent name="bpFilaments">
+               #<Item name="ConvexHull - Python" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
+            #</SurpassComponent>
+        #</SurpassTab>
     #</CustomTools>
 
 
