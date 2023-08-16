@@ -194,6 +194,7 @@ def XT_MJG_Synaptic_Pairing9(aImarisId):
     
     lstbox = Listbox(main, listvariable=names, selectmode=MULTIPLE, width=20, height=10)
     lstbox.grid(column=  0, row=1, sticky=W)
+    global vDistanceThreshold
     def select():
         global ObjectSelection, vDistanceThreshold,vOptionSurfaceSurfaceOverlap
         vOptionSurfaceSurfaceOverlap=var1.get()
