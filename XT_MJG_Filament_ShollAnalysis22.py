@@ -859,7 +859,8 @@ def XT_MJG_Filament_ShollAnalysis22(aImarisId):
         vBranchIndex=0
         zShollLabelsAll=[]
         vShollFinalIndex=0
-    
+        vNumberofShollIntersectionsCurrent=[0]*5
+
         # start2 = time.time()
     
     #Progress through each Sholl Sphere
