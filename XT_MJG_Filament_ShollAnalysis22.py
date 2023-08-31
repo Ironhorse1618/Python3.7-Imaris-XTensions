@@ -1560,7 +1560,7 @@ def XT_MJG_Filament_ShollAnalysis22(aImarisId):
     
     
                     for j in range (len(vLabelIndices)):
-                        vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Intersections", ' ' + zLabelName)
+                        vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Radius (um)", ' ' + zLabelName)
                         wLabelList.append(vLabelCreate)
                     vNewShollSpotsPerFilament.SetLabels(wLabelList)
     
