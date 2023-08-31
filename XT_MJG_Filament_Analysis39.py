@@ -160,6 +160,8 @@ def XT_MJG_Filament_Analysis38(aImarisId):
         elif IsFilament:
             vSurpassFilaments = vSurpassFilaments+1
             NamesFilamentIndex.append(vChildIndex)
+            NamesFilaments.append(vDataItem.GetName())
+
     ############################################################################
     
     #Dialog window
