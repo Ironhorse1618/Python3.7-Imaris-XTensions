@@ -859,6 +859,10 @@ def XT_MJG_Filament_ShollAnalysis22(aImarisId):
         vBranchIndex=0
         zShollLabelsAll=[]
         vShollFinalIndex=0
+<<<<<<< HEAD
+=======
+        vNumberofShollIntersectionsCurrent=[0]*5
+>>>>>>> e32c81db3f8bfd09687beabb10a64c68241b83b8
 
         # start2 = time.time()
 
@@ -1559,7 +1563,7 @@ def XT_MJG_Filament_ShollAnalysis22(aImarisId):
 
 
                     for j in range (len(vLabelIndices)):
-                        vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Intersections", ' ' + zLabelName)
+                        vLabelCreate = vFactory.CreateObjectLabel(vLabelIndices[j], "Sholl Radius (um)", ' ' + zLabelName)
                         wLabelList.append(vLabelCreate)
                     vNewShollSpotsPerFilament.SetLabels(wLabelList)
 
