@@ -8,15 +8,15 @@
     #<CustomTools>
         #<Menu>
             #<Submenu name="Filaments Functions">
-                #<Item name="Filament Analysis38" icon="Python3">
-                    #<Command>Python3XT::XT_MJG_Filament_Analysis38(%i)</Command>
+                #<Item name="Filament Analysis39" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_Filament_Analysis39(%i)</Command>
                 #</Item>
             #</Submenu>
        #</Menu>
        #<SurpassTab>
            #<SurpassComponent name="bpFilaments">
-               #<Item name="Filament Analysis38" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_Filament_Analysis38(%i)</Command>
+               #<Item name="Filament Analysis39" icon="Python3">
+                   #<Command>Python3XT::XT_MJG_Filament_Analysis39(%i)</Command>
                #</SurpassComponent>
            #</SurpassTab>
     #</CustomTools>
@@ -105,7 +105,7 @@ import collections
 
 import ImarisLib
 aImarisId=0
-def XT_MJG_Filament_Analysis38(aImarisId):
+def XT_MJG_Filament_Analysis39(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
