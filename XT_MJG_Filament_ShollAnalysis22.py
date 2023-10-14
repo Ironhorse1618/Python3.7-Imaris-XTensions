@@ -860,6 +860,10 @@ def XT_MJG_Filament_ShollAnalysis22(aImarisId):
         zShollLabelsAll=[]
         vShollFinalIndex=0
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        vNumberofShollIntersectionsCurrent=[0]*5
+>>>>>>> e32c81db3f8bfd09687beabb10a64c68241b83b8
 =======
         vNumberofShollIntersectionsCurrent=[0]*5
 >>>>>>> e32c81db3f8bfd09687beabb10a64c68241b83b8
