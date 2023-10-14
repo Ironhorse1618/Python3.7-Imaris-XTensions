@@ -186,7 +186,7 @@ def XT_MJG_CopyToAllTimepoints4(aImarisId):
     else:
         if qIsSpot:
             for t in range (vSizeT):
-                vTimeIndex= [t]*vSizeT
+                vTimeIndex= [t]*len(vIds)
                 vObjectTimeFinal.extend(vTimeIndex)
                 vSpotsPositionXYZFinal.extend(vObjectPositionXYZ)
                 vSpotsRadiusFinal.extend(vObjectRadius)
