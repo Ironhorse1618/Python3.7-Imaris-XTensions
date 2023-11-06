@@ -190,19 +190,19 @@ def XT_MJG_ConvexHull6(aImarisId):
     vSurfaceConvexHull.SetName(' Dendritic Field Analysis - '+ str(vSurpassObject.GetName()))
     
     ###############################################################################
-    def AddMaskToDataSet(vSliceMask):
-        global DataSet,vIndexZ
-        #Add slice to dataset
-        #whole volume
-        vDataSet.SetDataSubVolumeAs1DArrayFloats(vSliceMask.tolist(),
-                                        0,
-                                        0,
-                                        vIndexZ,
-                                        0,
-                                        0,
-                                        vDataSize[0],
-                                        vDataSize[1],
-                                        1)
+    # def AddMaskToDataSet(vSliceMask):
+    #     global DataSet,vIndexZ
+    #     #Add slice to dataset
+    #     #whole volume
+    #     vDataSet.SetDataSubVolumeAs1DArrayFloats(vSliceMask.tolist(),
+    #                                     0,
+    #                                     0,
+    #                                     vIndexZ,
+    #                                     0,
+    #                                     0,
+    #                                     vDataSize[0],
+    #                                     vDataSize[1],
+    #                                     1)
     ###############################################################################
     
     wNewStatConvexHullVolumePerFilament = []
@@ -439,7 +439,24 @@ def XT_MJG_ConvexHull6(aImarisId):
                 vSlice = vSlice.flatten('F')
                 vIndexZ=0
                 #Add mask to DataSet
-                AddMaskToDataSet(vSlice)
+                # AddMaskToDataSet(vSlice)
+                #Add slice to dataset
+                #whole volume
+                vDataSet.SetDataSubVolumeAs1DArrayFloats(vSlice.tolist(),
+                                                0,
+                                                0,
+                                                vIndexZ,
+                                                0,
+                                                0,
+                                                vDataSize[0],
+                                                vDataSize[1],
+                                                1)
+                
+                
+                
+                
+                
+                
             else:#For 3D surface object
                 image = np.zeros((vDataSize[2],vDataSize[0],vDataSize[1]))
                 for vIndexZ in range (0,vDataSize[2]):
@@ -487,12 +504,31 @@ def XT_MJG_ConvexHull6(aImarisId):
                 for vIndexZ in range (vDataSize[2]):
                     vSlice = vVolume[vIndexZ].flatten('F')
                     #Use function to Add mask to DataSet
-                    AddMaskToDataSet(vSlice)
+                    # AddMaskToDataSet(vSlice)
+                    
+                    
+                    #Add slice to dataset
+                    #whole volume
+                    vDataSet.SetDataSubVolumeAs1DArrayFloats(vSlice.tolist(),
+                                                    0,
+                                                    0,
+                                                    vIndexZ,
+                                                    0,
+                                                    0,
+                                                    vDataSize[0],
+                                                    vDataSize[1],
+                                                    1)
+                    
+                    
+                    
+                    
+                    
+                    
                     progress_bar2['value'] = int((vIndexZ+1)/vDataSize[2]*100) #  % out of 100
                     qProgressBar.update()
     
-                elapsed = time.time() - start
-                print(elapsed)
+                # elapsed = time.time() - start
+                # print(elapsed)
     
           #make surface convex hull
             ip = vImarisApplication.GetImageProcessing()
@@ -551,8 +587,8 @@ def XT_MJG_ConvexHull6(aImarisId):
         vSurpassObject.SetLabels(wLabelList)
     
     
-    elapsedALL = time.time() - startALL
-    print('Total Time--' + str(elapsedALL))
+    # elapsedALL = time.time() - startALL
+    # print('Total Time--' + str(elapsedALL))
     
     qProgressBar.destroy()
     qProgressBar.mainloop()
