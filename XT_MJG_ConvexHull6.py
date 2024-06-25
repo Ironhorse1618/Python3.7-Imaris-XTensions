@@ -19,10 +19,12 @@
             #<SurpassComponent name="bpSurfaces">
                 #<Item name="ConvexHull - Python" icon="Python3">
                     #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
+                #</Item>
             #</SurpassComponent>
             #<SurpassComponent name="bpFilaments">
-               #<Item name="ConvexHull - Python" icon="Python3">
-                   #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
+                #<Item name="ConvexHull - Python" icon="Python3">
+                    #<Command>Python3XT::XT_MJG_ConvexHull6(%i)</Command>
+                #</Item>
             #</SurpassComponent>
         #</SurpassTab>
     #</CustomTools>
