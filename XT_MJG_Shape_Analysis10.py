@@ -2,7 +2,7 @@
 #
 #Written by Matthew J. Gastinger
 #
-#May 2023updated - optimized for Imaris 10.0.1
+#Oct 2025 updated - optimized for Imaris 10.2
 
 # <CustomTools>
 #     <Menu>
