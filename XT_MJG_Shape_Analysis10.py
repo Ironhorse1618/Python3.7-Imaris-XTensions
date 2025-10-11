@@ -112,7 +112,7 @@ from tkinter.ttk import *
 
 import ImarisLib
 
-aImarisId=0
+#aImarisId=0
 def XT_MJG_Shape_Analysis10(aImarisId):
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
