@@ -108,8 +108,6 @@ from tkinter import ttk
 from tkinter.ttk import *
 
 
-
-
 import ImarisLib
 
 #aImarisId=0
