@@ -5,34 +5,34 @@
     #     <Menu>
     #         <Submenu name="Spots Functions">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #         <Submenu name="Surfaces Functions">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #         <Submenu name="Filamernts Functions">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </Submenu>
     #     </Menu>
     #     <SurpassTab>
     #         <SurpassComponent name="bpSpots">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #         <SurpassComponent name="bpSurfaces">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #         <SurpassComponent name="bpFilaments">
     #             <Item name="Custom Statistic" icon="Python3">
-    #                 <Command>Python3XT::XT_MJG_CustomStat1(%i)</Command>
+    #                 <Command>Python3XT::XT_MJG_CustomStat2(%i)</Command>
     #             </Item>
     #         </SurpassComponent>
     #     </SurpassTab>
@@ -60,10 +60,11 @@ import math
 import itertools
 
 
-#aImarisId=0
-def XT_MJG_CustomStat1(aImarisId):
-    global vDataSize, wCustomStat1, wCustomStat2, wCustomStat3, vEntry_Formula_Value
-    global vStatNameCustom, vUnitNameCustom
+aImarisId=0
+def XT_MJG_CustomStat2(aImarisId):
+    global wCustomStat1, wCustomStat2, wCustomStat3, vEntry_Formula_Value, vUnitNameCustom
+    global wChannelStat1, wChannelStat2, wChannelStat3, qIsTrackStat, vDataSize
+    global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, qSelectedChannels, vStatNameCustom
     # Create an ImarisLib object
     vImarisLib = ImarisLib.ImarisLib()
     # Get an imaris object with id aImarisId
@@ -129,8 +130,8 @@ def XT_MJG_CustomStat1(aImarisId):
     window.geometry("+{}+{}".format(positionRight, positionDown))
     ##################################################################
     def SubsetFilament():
-        global vStatNamesFilamentAll, w1, w2, w3
-        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom
+        global vStatNamesFilamentAll, w1, w2, w3, vStatisticsALL
+        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom,vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat    
         vStatNamesFilamentAll = np.unique(vStatisticsALL.mNames)[np.where(['Filament' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
@@ -153,8 +154,8 @@ def XT_MJG_CustomStat1(aImarisId):
         window.mainloop()
         
     def SubsetSegment():
-        global vStatNamesSegmentAll, w1, w2, w3
-        global wCustomStat1, wCustomStat2, wCustomStat3,vUnitNameCustom
+        global vStatNamesSegmentAll, w1, w2, w3, vStatisticsALL
+        global wCustomStat1, wCustomStat2, wCustomStat3,vUnitNameCustom,vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat    
         vStatNamesSegmentAll = np.unique(vStatisticsALL.mNames)[np.where(['Segment' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
@@ -174,8 +175,8 @@ def XT_MJG_CustomStat1(aImarisId):
         window.mainloop()
         
     def SubsetSpines():
-        global vStatNamesSpineAll, w1, w2, w3
-        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom
+        global vStatNamesSpineAll, w1, w2, w3, vStatisticsALL
+        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom,vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat
         vStatNamesSpineAll = np.unique(vStatisticsALL.mNames)[np.where(['Spine' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
@@ -200,8 +201,8 @@ def XT_MJG_CustomStat1(aImarisId):
         window.mainloop()
         
     def SubsetNucleus():
-        global vStatNamesNucleusAll, w1, w2, w3
-        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom
+        global vStatNamesNucleusAll, w1, w2, w3, vStatisticsALL
+        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom,vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat
         vStatNamesNucleusAll = np.unique(vStatisticsALL.mNames)[np.where(['Nucleus' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
@@ -222,8 +223,8 @@ def XT_MJG_CustomStat1(aImarisId):
         window.mainloop()
         
     def SubsetCells():
-        global vStatNamesCellAll, w1, w2, w3
-        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom
+        global vStatNamesCellAll, w1, w2, w3, vStatisticsALL
+        global wCustomStat1, wCustomStat2, wCustomStat3, vUnitNameCustom,vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat
         vStatNamesCellAll = np.unique(vStatisticsALL.mNames)[np.where(['Cell' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
@@ -243,9 +244,9 @@ def XT_MJG_CustomStat1(aImarisId):
         window.mainloop()
     
     def SubsetVesicles():
-        global vStatNamesVesiclesAll, w1, w2, w3
+        global vStatNamesVesiclesAll, w1, w2, w3, vStatisticsALL
         global wCustomStat1, wCustomStat2, wCustomStat3
-        global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, vUnitNameCustom
+        global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, vUnitNameCustom,vDataSize
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat
         vStatNamesVesiclesAll = np.unique(vStatisticsALL.mNames)[np.where(['Vesicles' in item for item in np.unique(vStatisticsALL.mNames)])[0].tolist()].tolist()
         if vStatNamesVesiclesAll == []:
@@ -270,7 +271,7 @@ def XT_MJG_CustomStat1(aImarisId):
     
     def CustomTrackStat():
         global wCustomTrackStat1, wCustomTrackStat3, wCustomTrackStat3
-        global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, vUnitNameCustom
+        global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, vUnitNameCustom, vDataSize
         global qSelectedChannels, vStatNameCustom, vEntry_Formula_Value, qIsTrackStat
         wCustomTrackStat1.get()
         wCustomTrackStat2.get()
@@ -280,7 +281,7 @@ def XT_MJG_CustomStat1(aImarisId):
         qSAtoVolumeRatio = var2.get()
         qTotalMeanIntensity = var3.get()
         qSelectedChannels = var4.get()
-        
+
         if "Intensity" in wCustomTrackStat1.get():
             wChannelStat1.get()
             if wChannelStat1.get() == 'Ch#':
@@ -306,11 +307,13 @@ def XT_MJG_CustomStat1(aImarisId):
     
     def CustomStat():
         global wCustomStat1, wCustomStat2, wCustomStat3, vEntry_Formula_Value, vUnitNameCustom
-        global wChannelStat1, wChannelStat2, wChannelStat3, qIsTrackStat,vDataSize
+        global wChannelStat1, wChannelStat2, wChannelStat3, qIsTrackStat, vDataSize
         global qPerimeter, qSAtoVolumeRatio, qTotalMeanIntensity, qSelectedChannels, vStatNameCustom
         qIsTrackStat = 0
         qPerimeter = var1.get()
         qSAtoVolumeRatio = var2.get()
+        vDataSize = [vImage.GetSizeX(),vImage.GetSizeY(),vImage.GetSizeZ()]
+
         if qIsFilament:
             if "Filament" in (wCustomStat1.get()) or "Filament" in (wCustomStat2.get()) or "Filament" in (wCustomStat3.get()):
                 qIsStat1Valid = 'Filament' in wCustomStat1.get() or 'Choose Stat1' in wCustomStat1.get()
@@ -748,6 +751,9 @@ def XT_MJG_CustomStat1(aImarisId):
         stat1 = np.array(vStat1SET.mValues)
         stat2 = np.array(vStat2SET.mValues)  
         stat3 = np.array(vStat3SET.mValues)
+        
+        if stat1.size == 0 and stat2.size == 0 and stat3.size == 0:
+            sys.exit()
            
         if "Filament No. Segment Branches" in (wCustomStat1.get(), wCustomStat2.get(), wCustomStat3.get()):
             messagebox.showerror(title='Invalid Stat',
